@@ -1,0 +1,143 @@
+================================================================================
+                        PATENT SPECIFICATION DRAFT
+================================================================================
+
+1. FIELD OF THE INVENTION
+--------------------------------------------------------------------------------
+The present invention relates generally to the field of healthcare informatics 
+and medical diagnostic systems. More specifically, it relates to an integrated 
+digital platform that utilizes ensemble machine learning algorithms for 
+preliminary disease prediction, automated triage, and holistic management of 
+patient-doctor consultations and insurance policy analysis.
+
+2. BACKGROUND OF THE INVENTION
+--------------------------------------------------------------------------------
+Conventional healthcare systems often face significant delays in preliminary 
+diagnosis and specialist referrals. Existing symptom checkers frequently operate 
+in silos, providing generic medical information without considering a patient's 
+vitals, such as Body Mass Index (BMI), Blood Pressure, and blood panel data. 
+Furthermore, once a preliminary diagnosis is made, there is a disconnect between 
+the diagnostic phase, the logistical phase (finding and booking a doctor), and 
+the financial phase (determining insurance coverage). There is a critical need 
+for an integrated system that automates the transition from symptom detection to 
+actionable care.
+
+3. SUMMARY OF THE INVENTION
+--------------------------------------------------------------------------------
+The present invention, titled "FirstContact," is a comprehensive healthcare 
+system that automates the triage process through an AI-driven engine. The system 
+receives a plurality of patient inputs, including demographics, vital signs, 
+and symptoms, and processes them through a Random Forest Classifier to generate 
+a probabilistic diagnosis. The invention further includes a dynamic scheduling 
+module for telemedicine, a geospatial hospital locator, and an automated text-
+analysis module for insurance policy evaluation, providing a unified solution 
+for patient health management.
+
+4. TECHNICAL NOVELTY AND ADVANTAGES
+--------------------------------------------------------------------------------
+- **Integrated Lifecycle Management**: The primary novelty lies in the seamless 
+  integration of AI diagnosis with doctor booking and insurance analysis in a 
+  single session.
+- **Enhanced Accuracy via Ensemble Learning**: Utilization of Random Forest 
+  algorithms reduces the "black box" risk of deep learning while providing 
+  higher accuracy and stability than traditional decision trees.
+- **Dynamic Vitals Integration**: Unlike basic symptom checkers, the invention 
+  incorporates real-time physiological data (vitals and blood tests) into its 
+  predictive feature vector.
+- **Triage Efficiency**: Automates the classification of patient urgency, 
+  thereby reducing the burden on primary care emergency facilities.
+
+5. BRIEF DESCRIPTION OF THE DRAWINGS
+--------------------------------------------------------------------------------
+- **Figure 1**: System Architecture Diagram showing the interaction between 
+  the User, Frontend, Node.js Backend, and Python ML Engine.
+- **Figure 2**: Operational Flowchart depicting the step-by-step logic from 
+  user login to diagnosis and subsequent care actions.
+- **Figure 3**: Data Processing Pipeline showing how vitals and symptoms are 
+  converted into a feature vector for ML inference.
+
+6. DETAILED DESCRIPTION OF THE INVENTION
+--------------------------------------------------------------------------------
+The invention comprises several interconnected modules. The **Medidose Engine** 
+is the core diagnostic component, implemented in Python using the scikit-learn 
+library. It utilizes a pre-trained Random Forest model that has been trained on 
+clinical data encompassing diverse symptoms and physiological markers.
+
+When a user initiates the process via the **Web Interface**, the system captures 
+data in a multi-step form. This data is transmitted via an encrypted REST API 
+to the **Backend Server (Node.js)**. The backend spawns a child process to 
+invoke the ML engine, passing the data as a JSON object. The engine calculates 
+the BMI, normalizes vital signs, and applies one-hot encoding to symptoms. 
+The top three probable conditions are returned to the user with confidence 
+percentages and specialist recommendations.
+
+7. SYSTEM ARCHITECTURE EXPLANATION
+--------------------------------------------------------------------------------
+The architecture follows a modular, full-stack design:
+1. **Presentation Layer**: HTML5/CSS3/JS frontend providing a responsive UI.
+2. **Logic Layer**: Node.js/Express server handling authentication (JWT), 
+   routing, and database interactions.
+3. **Inference Layer**: Python-based ML module performing real-time diagnosis.
+4. **Data Layer**: MongoDB Atlas hosting user records, doctor profiles, and 
+   appointment schedules.
+5. **Integration Layer**: Third-party APIs for mapping (Google Maps) and 
+   payments (Stripe).
+
+8. FLOWCHART OF OPERATION
+--------------------------------------------------------------------------------
+1.  **Start**: User logs into the platform.
+2.  **Input**: User enters vitals (BP, Heart Rate, etc.) and selects symptoms.
+3.  **Preprocessing**: System calculates BMI and encodes categorical data.
+4.  **Inference**: Random Forest model analyzes the feature vector.
+5.  **Result Display**: Top 3 diseases with confidence scores and advice.
+6.  **Action Selection**: User chooses to 'Book Appointment' or 'Analyze Insurance'.
+7.  **Closure**: Appointment confirmed or insurance coverage verified.
+
+9. CLAIMS
+--------------------------------------------------------------------------------
+1. A method for integrated healthcare management, comprising:
+   a) Receiving patient vitals and symptoms via a web interface;
+   b) Generating a probabilistic diagnosis using a Random Forest algorithm;
+   c) Providing an automated specialist recommendation based on said diagnosis;
+   d) Facilitating an appointment booking with a recommended specialist.
+2. The method of claim 1, further comprising analyzing an insurance policy 
+   document to determine financial coverage for the generated diagnosis.
+3. The method of claim 1, wherein the vital signs include Blood Pressure, 
+   Body Temperature, and Heart Rate, which are used as numerical features 
+   in the predictive model.
+
+10. ABSTRACT
+--------------------------------------------------------------------------------
+The invention provides an AI-powered healthcare accessibility platform that 
+combines preliminary diagnosis with logistical healthcare management. By 
+leveraging ensemble machine learning, specifically a Random Forest Classifier, 
+the system predicts potential health conditions from a combination of user 
+symptoms and vital signs. The platform further integrates a telemedicine booking 
+system and insurance policy analysis, creating a unified digital pathway from 
+initial symptom assessment to professional medical treatment and financial 
+planning.
+
+11. FIGURE 1: SYSTEM COMPONENTS
+--------------------------------------------------------------------------------
+[User] <--> [Web Browser (UI)] <--> [Express Server] <--> [ML Predictor]
+                                        |
+                                        +--> [MongoDB]
+                                        +--> [External APIs]
+
+12. FIGURE 2: DIAGNOSTIC LOGIC
+--------------------------------------------------------------------------------
+[Vitals Input] --> [Symptom Selection] --> [Feature Encoding] --> [RF Model]
+                                                                    |
+                                        [Top 3 Predictions] <-------+
+
+13. FIGURE 3: POST-DIAGNOSIS ACTIONS
+--------------------------------------------------------------------------------
+[Diagnosis Result]
+       |
+       +--> [Book Specialist] --> [Video Consultation]
+       |
+       +--> [Analyze Insurance] --> [Coverage Report]
+       |
+       +--> [Find Hospital] --> [Google Maps Routing]
+
+================================================================================

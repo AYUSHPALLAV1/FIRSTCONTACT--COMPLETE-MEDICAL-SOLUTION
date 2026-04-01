@@ -1,0 +1,105 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage{charter} % Professional font
+
+\geometry{margin=1in}
+\onehalfspacing
+
+\title{\textbf{Patent Specification Draft: FirstContact}\\ \large Digital Healthcare Accessibility and AI-Driven Preliminary Diagnosis}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Field of the Invention}
+The present invention relates generally to the field of healthcare informatics and medical diagnostic systems. More specifically, it relates to an integrated digital platform that utilizes ensemble machine learning algorithms for preliminary disease prediction, automated triage, and holistic management of patient-doctor consultations and insurance policy analysis.
+
+\section{Background of the Invention}
+Conventional healthcare systems often face significant delays in preliminary diagnosis and specialist referrals. Existing symptom checkers frequently operate in silos, providing generic medical information without considering a patient's vitals, such as Body Mass Index (BMI), Blood Pressure, and blood panel data. Furthermore, once a preliminary diagnosis is made, there is a disconnect between the diagnostic phase, the logistical phase (finding and booking a doctor), and the financial phase (determining insurance coverage). There is a critical need for an integrated system that automates the transition from symptom detection to actionable care.
+
+\section{Summary of the Invention}
+The present invention, titled "FirstContact," is a comprehensive healthcare system that automates the triage process through an AI-driven engine. The system receives a plurality of patient inputs, including demographics, vital signs, and symptoms, and processes them through a Random Forest Classifier to generate a probabilistic diagnosis. The invention further includes a dynamic scheduling module for telemedicine, a geospatial hospital locator, and an automated text-analysis module for insurance policy evaluation, providing a unified solution for patient health management.
+
+\section{Technical Novelty and Advantages}
+\begin{itemize}[leftmargin=*, label=\textbullet]
+    \item \textbf{Integrated Lifecycle Management}: The primary novelty lies in the seamless integration of AI diagnosis with doctor booking and insurance analysis in a single session.
+    \item \textbf{Enhanced Accuracy via Ensemble Learning}: Utilization of Random Forest algorithms reduces the "black box" risk of deep learning while providing higher accuracy and stability than traditional decision trees.
+    \item \textbf{Dynamic Vitals Integration}: Unlike basic symptom checkers, the invention incorporates real-time physiological data (vitals and blood tests) into its predictive feature vector.
+    \item \textbf{Triage Efficiency}: Automates the classification of patient urgency, thereby reducing the burden on primary care emergency facilities.
+\end{itemize}
+
+\section{Brief Description of the Drawings}
+\begin{itemize}[leftmargin=*, label=\textbullet]
+    \item \textbf{Figure 1}: System Architecture Diagram showing the interaction between the User, Frontend, Node.js Backend, and Python ML Engine.
+    \item \textbf{Figure 2}: Operational Flowchart depicting the step-by-step logic from user login to diagnosis and subsequent care actions.
+    \item \textbf{Figure 3}: Data Processing Pipeline showing how vitals and symptoms are converted into a feature vector for ML inference.
+\end{itemize}
+
+\section{Detailed Description of the Invention}
+The invention comprises several interconnected modules. The \textbf{Medidose Engine} is the core diagnostic component, implemented in Python using the scikit-learn library. It utilizes a pre-trained Random Forest model that has been trained on clinical data encompassing diverse symptoms and physiological markers.
+
+When a user initiates the process via the \textbf{Web Interface}, the system captures data in a multi-step form. This data is transmitted via an encrypted REST API to the \textbf{Backend Server (Node.js)}. The backend spawns a child process to invoke the ML engine, passing the data as a JSON object. The engine calculates the BMI, normalizes vital signs, and applies one-hot encoding to symptoms. The top three probable conditions are returned to the user with confidence percentages and specialist recommendations.
+
+\section{System Architecture Explanation}
+The architecture follows a modular, full-stack design:
+\begin{enumerate}
+    \item \textbf{Presentation Layer}: HTML5/CSS3/JS frontend providing a responsive UI.
+    \item \textbf{Logic Layer}: Node.js/Express server handling authentication (JWT), routing, and database interactions.
+    \item \textbf{Inference Layer}: Python-based ML module performing real-time diagnosis.
+    \item \textbf{Data Layer}: MongoDB Atlas hosting user records, doctor profiles, and appointment schedules.
+    \item \textbf{Integration Layer}: Third-party APIs for mapping (Google Maps) and payments (Stripe).
+\end{enumerate}
+
+\section{Flowchart of Operation}
+\begin{enumerate}
+    \item \textbf{Start}: User logs into the platform.
+    \item \textbf{Input}: User enters vitals (BP, Heart Rate, etc.) and selects symptoms.
+    \item \textbf{Preprocessing}: System calculates BMI and encodes categorical data.
+    \item \textbf{Inference}: Random Forest model analyzes the feature vector.
+    \item \textbf{Result Display}: Top 3 diseases with confidence scores and advice.
+    \item \textbf{Action Selection}: User chooses to 'Book Appointment' or 'Analyze Insurance'.
+    \item \textbf{Closure}: Appointment confirmed or insurance coverage verified.
+\end{enumerate}
+
+\section{Claims}
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item A method for integrated healthcare management, comprising:
+    \begin{enumerate}[label=\alph*)]
+        \item Receiving patient vitals and symptoms via a web interface;
+        \item Generating a probabilistic diagnosis using a Random Forest algorithm;
+        \item Providing an automated specialist recommendation based on said diagnosis;
+        \item Facilitating an appointment booking with a recommended specialist.
+    \end{enumerate}
+    \item The method of claim 1, further comprising analyzing an insurance policy document to determine financial coverage for the generated diagnosis.
+    \item The method of claim 1, wherein the vital signs include Blood Pressure, Body Temperature, and Heart Rate, which are used as numerical features in the predictive model.
+\end{enumerate}
+
+\section{Abstract}
+The invention provides an AI-powered healthcare accessibility platform that combines preliminary diagnosis with logistical healthcare management. By leveraging ensemble machine learning, specifically a Random Forest Classifier, the system predicts potential health conditions from a combination of user symptoms and vital signs. The platform further integrates a telemedicine booking system and insurance policy analysis, creating a unified digital pathway from initial symptom assessment to professional medical treatment and financial planning.
+
+\section{Figures (Conceptual Descriptions)}
+\textbf{Figure 1: System Components}\\
+[User] $\leftrightarrow$ [Web Browser (UI)] $\leftrightarrow$ [Express Server] $\leftrightarrow$ [ML Predictor]\\
+\indent\hspace{4.5cm} |\\
+\indent\hspace{4.5cm} +$\rightarrow$ [MongoDB]\\
+\indent\hspace{4.5cm} +$\rightarrow$ [External APIs]\\
+
+\vspace{1cm}
+\noindent\textbf{Figure 2: Diagnostic Logic}\\
+[Vitals Input] $\rightarrow$ [Symptom Selection] $\rightarrow$ [Feature Encoding] $\rightarrow$ [RF Model] $\rightarrow$ [Top 3 Predictions]\\
+
+\vspace{1cm}
+\noindent\textbf{Figure 3: Post-Diagnosis Actions}\\
+[Diagnosis Result]\\
+$\rightarrow$ [Book Specialist] $\rightarrow$ [Video Consultation]\\
+$\rightarrow$ [Analyze Insurance] $\rightarrow$ [Coverage Report]\\
+$\rightarrow$ [Find Hospital] $\rightarrow$ [Google Maps Routing]
+
+\end{document}

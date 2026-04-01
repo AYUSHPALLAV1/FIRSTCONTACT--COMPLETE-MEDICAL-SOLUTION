@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FirstContact - Consultation</title>
+    <link rel="stylesheet" href="home.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Maps API (Locations/Places) - Distinct from Gemini AI Key -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBa3B0FD6hRHCQylmYngnHUEaL5tB_rE7U&libraries=places"></script>
+    <!-- Stripe JS -->
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        body { 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh;
+            background-color: var(--bg-white);
+        }
+        
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 3rem 5%;
+        }
+
+        .consultation-container {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+        }
+
+        .toggle-switch-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: flex;
+            background: #edf2f7;
+            border-radius: 50px;
+            padding: 5px;
+            width: 320px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+        }
+
+        .toggle-switch input[type="radio"] {
+            display: none;
+        }
+
+        .toggle-switch label {
+            flex: 1;
+            z-index: 2;
+            cursor: pointer;
+            padding: 10px 0;
+            text-align: center;
+            font-weight: 500;
+            color: #718096;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+            border-radius: 50px;
+        }
+
+        .toggle-switch input:checked + label {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .toggle-switch .slider {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            height: calc(100% - 10px);
+            width: calc(50% - 5px);
+            background: white;
+            border-radius: 50px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            z-index: 1;
+        }
+
+        /* Slider Logic */
+        /* If first option (Hospitals) is checked, slider stays left (default) */
+        #radio-hospitals:checked ~ .slider {
+            transform: translateX(0);
+        }
+
+        /* If second option (Appointment) is checked, slider moves right */
+        #radio-appointment:checked ~ .slider {
+            transform: translateX(100%); /* Moves 100% of its own width */
+            left: 5px; /* Keep origin same, just translate */
+        }
+        
+        /* Specific fix for the gap calculation: 
+           Width is 50% - 5px. Translate 100% moves it by its width.
+           Total width = (50% - 5px) * 2 + 10px padding = 100%. Correct.
+           Wait, if I translate 100% of (50% - 5px), it moves to the middle.
+           Let's double check the math.
+           Container width = W.
+           Slider width = S = W/2 - 5.
+           Start pos = 5.
+           End pos should be W - 5 - S = W - 5 - (W/2 - 5) = W/2.
+           Current pos + translate = End pos.
+           5 + T = W/2.
+           T = W/2 - 5 = S.
+           So yes, translating by 100% (of itself) is exactly right.
+        */
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease forwards;
+            text-align: left;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Empty State Styles */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-light);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #cbd5e0;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Map & Results Styles */
+        #map {
+            width: 100%;
+            height: 400px;
+            border-radius: 12px;
+            margin-top: 1.5rem;
+            display: none;
+        }
+
+        .diagnosis-alert {
+            background: #ebf8ff;
+            border-left: 4px solid var(--primary-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: left;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .diagnosis-alert h4 {
+            color: #2c5282;
+            margin-bottom: 0.5rem;
+        }
+
+        .diagnosis-alert p {
+            color: #4a5568;
+            font-size: 0.95rem;
+        }
+        
+        .places-list {
+            margin-top: 2rem;
+            display: none;
+        }
+        
+        .place-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            text-align: left;
+            transition: all 0.2s;
+        }
+        
+        .place-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .btn-analyze {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 1rem 0;
+            transition: transform 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-analyze:hover {
+            transform: scale(1.05);
+        }
+        /* Doctors Grid */
+        .doctors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 1rem;
+        }
+        
+        .doctor-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .doctor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+        }
+        
+        .doctor-img-container {
+            height: 200px;
+            overflow: hidden;
+            background: #edf2f7;
+        }
+        
+        .doctor-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .doctor-info {
+            padding: 1.5rem;
+        }
+        
+        .doctor-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .doctor-spec {
+            color: #4a5568;
+            font-weight: 500;
+            margin-bottom: 0.2rem;
+        }
+        
+        .doctor-hospital {
+            color: #718096;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .doctor-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #4a5568;
+        }
+        
+        .doctor-rating {
+            color: #f6ad55;
+            font-weight: 600;
+        }
+        
+        .doctor-fees {
+            font-weight: 700;
+            color: #2d3748;
+            font-size: 1.1rem;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #718096;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="home.html" class="logo" style="text-decoration: none;">
+            <i class="fas fa-heartbeat"></i> FirstContact
+        </a>
+        <div class="nav-links">
+            <a href="medidose.html" class="nav-btn">Medidose</a>
+            
+            <!-- Updated Consultation Dropdown -->
+            <div class="dropdown">
+                <a href="consultation.html" class="nav-btn active">Consultation <i class="fas fa-caret-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="consultation.html?type=appointment">Appointment</a>
+                    <a href="consultation.html?type=hospitals">Hospitals Nearby</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <a href="insurance.html" class="nav-btn">Insurance <i class="fas fa-caret-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="insurance.html?type=with">With Insurance</a>
+                    <a href="insurance.html?type=without">Without Insurance</a>
+                </div>
+            </div>
+            <a href="profile.html" class="nav-btn user-info-btn" id="userInfoBtn"><i class="fas fa-user-circle"></i> User Info</a>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="consultation-container">
+            <h1>Consultation Services</h1>
+            
+            <div class="toggle-switch-container">
+                <div class="toggle-switch">
+                    <input type="radio" id="radio-hospitals" name="consultationType" value="hospitals">
+                    <label for="radio-hospitals">Hospitals Nearby</label>
+                    
+                    <input type="radio" id="radio-appointment" name="consultationType" value="appointment">
+                    <label for="radio-appointment">Appointment</label>
+                    
+                    <div class="slider"></div>
+                </div>
+            </div>
+
+            <!-- Appointment Section -->
+            <div id="appointment-section" class="content-section">
+                <div id="doctors-grid" class="doctors-grid">
+                    <!-- Doctors will be injected here via JS -->
+                    <div class="loader" id="doctors-loader" style="margin: 2rem auto;"></div>
+                </div>
+            </div>
+
+            <!-- Booking Modal -->
+            <div id="booking-modal" class="modal-overlay" style="display: none;">
+                <div class="modal-content">
+                    <span class="close-modal" onclick="closeBookingModal()">&times;</span>
+                    <h2 id="modal-doctor-name">Book Appointment</h2>
+                    <p id="modal-doctor-details" style="color: #718096; margin-bottom: 1rem;"></p>
+                    
+                    <form id="booking-form">
+                        <div class="form-group">
+                            <label>Select Date</label>
+                            <input type="date" id="appointment-date" required min="" style="width: 100%; padding: 0.8rem; border: 1px solid #e2e8f0; border-radius: 8px;">
+                        </div>
+                        <div class="form-group">
+                            <label>Select Time</label>
+                            <select id="appointment-time" required style="width: 100%; padding: 0.8rem; border: 1px solid #e2e8f0; border-radius: 8px;">
+                                <option value="">Select a slot</option>
+                            </select>
+                        </div>
+                        
+                        <div id="payment-element-container" style="margin-top: 1.5rem;">
+                            <!-- Stripe Payment Element will be inserted here -->
+                            <div id="payment-element"></div>
+                        </div>
+
+                        <button type="submit" id="btn-pay-book" class="btn-primary" style="width: 100%; margin-top: 1.5rem;">
+                            Pay <span id="pay-amount"></span> & Book Video Call
+                        </button>
+                        <div id="payment-message" class="hidden" style="color: red; margin-top: 10px; text-align: center;"></div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Success Modal -->
+            <div id="success-modal" class="modal-overlay" style="display: none;">
+                <div class="modal-content" style="text-align: center;">
+                    <i class="fas fa-check-circle" style="font-size: 4rem; color: #48bb78; margin-bottom: 1rem;"></i>
+                    <h2>Appointment Confirmed!</h2>
+                    <p>Your video consultation has been scheduled.</p>
+                    <p style="margin: 1rem 0; font-weight: 500;">Meeting Link: <a href="#" style="color: #3182ce;">meet.google.com/abc-defg-hij</a></p>
+                    <button class="btn-primary" onclick="closeSuccessModal()">Done</button>
+                </div>
+            </div>
+
+            <!-- Hospitals Nearby Section -->
+            <div id="hospitals-section" class="content-section">
+                
+                <!-- Diagnosis Integration -->
+                <div id="diagnosis-alert" class="diagnosis-alert">
+                    <h4><i class="fas fa-user-md"></i> Recent Diagnosis Found</h4>
+                    <p>We found a recent symptom analysis. Click below to find the most appropriate care facility based on your condition.</p>
+                    <button id="btn-analyze-diagnosis" class="btn-analyze">
+                        <i class="fas fa-magic"></i> Analyze & Find Care
+                    </button>
+                    <div id="analysis-loader" class="loader" style="display: none; margin: 1rem 0;"></div>
+                </div>
+
+                <div id="map-container" style="display: none;">
+                    <div style="text-align: left; margin-bottom: 1rem;">
+                        <h3 id="recommendation-title">Recommended: ...</h3>
+                        <p id="recommendation-reason" style="color: #718096;"></p>
+                    </div>
+                    <div id="map"></div>
+                </div>
+
+                <div id="places-list" class="places-list">
+                    <!-- Places will be injected here -->
+                </div>
+
+                <div id="empty-hospitals" class="empty-state">
+                    <i class="fas fa-hospital-alt"></i>
+                    <h3>Hospitals Nearby</h3>
+                    <p>Coming soon. Find the best care centers around you.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="modern-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <i class="fas fa-heartbeat"></i> FirstContact
+                </div>
+                <p>Your companion for better health decisions.</p>
+                <div class="footer-socials">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="footer-links-group">
+                <h4>Product</h4>
+                <a href="medidose.html">Medidose</a>
+                <a href="consultation.html">Consultation</a>
+                <a href="insurance.html">Insurance</a>
+            </div>
+            <div class="footer-links-group">
+                <h4>Company</h4>
+                <a href="#">About Us</a>
+                <a href="#">Careers</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="footer-links-group">
+                <h4>Legal</h4>
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+                <a href="#">Security</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 FirstContact. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Check if user is logged in
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = 'index.html';
+        }
+        
+        // Update user info button text
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user) {
+            document.getElementById('userInfoBtn').innerHTML = `<i class="fas fa-user-circle"></i> ${user.name}`;
+        }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const appointmentSection = document.getElementById('appointment-section');
+            const hospitalsSection = document.getElementById('hospitals-section');
+            const radioHospitals = document.getElementById('radio-hospitals');
+            const radioAppointment = document.getElementById('radio-appointment');
+            const radios = document.querySelectorAll('input[name="consultationType"]');
+            
+            // Diagnosis Elements
+            const diagnosisAlert = document.getElementById('diagnosis-alert');
+            const btnAnalyze = document.getElementById('btn-analyze-diagnosis');
+            const analysisLoader = document.getElementById('analysis-loader');
+            const mapContainer = document.getElementById('map-container');
+            const emptyHospitals = document.getElementById('empty-hospitals');
+            const placesList = document.getElementById('places-list');
+            const recommendationTitle = document.getElementById('recommendation-title');
+            const recommendationReason = document.getElementById('recommendation-reason');
+
+            // Function to update view based on type
+            function updateView(type) {
+                // Hide all
+                appointmentSection.classList.remove('active');
+                hospitalsSection.classList.remove('active');
+
+                if (type === 'appointment') {
+                    appointmentSection.classList.add('active');
+                    radioAppointment.checked = true;
+                    loadDoctors(); // Load doctors when appointment section is active
+                } else {
+                    // Default to hospitals
+                    hospitalsSection.classList.add('active');
+                    radioHospitals.checked = true;
+                    checkDiagnosis(); // Check for diagnosis when showing hospital section
+                }
+            }
+
+            // --- DOCTOR APPOINTMENT LOGIC ---
+            let selectedDoctor = null;
+            let stripe = Stripe('pk_test_51R2DBMBgOCapS6fQNqfeepilVfgs2RY71E3t4VBiImiYTTcpJ7QE7dlxC72h2PKcTEyZeq3P7UsL1PQCqPWjjzN800VKnQoACT');
+            let elements;
+
+            async function loadDoctors() {
+                const grid = document.getElementById('doctors-grid');
+                const loader = document.getElementById('doctors-loader');
+                
+                // Avoid reloading if already loaded
+                if (grid.children.length > 1) return; 
+
+                try {
+                    const res = await fetch('/api/appointment/doctors');
+                    const result = await res.json();
+                    
+                    if (result.success) {
+                        loader.style.display = 'none';
+                        renderDoctors(result.data);
+                    }
+                } catch (error) {
+                    console.error('Error loading doctors:', error);
+                    loader.innerHTML = '<p>Error loading doctors. Please refresh.</p>';
+                }
+            }
+
+            function renderDoctors(doctors) {
+                const grid = document.getElementById('doctors-grid');
+                doctors.forEach(doc => {
+                    const card = document.createElement('div');
+                    card.className = 'doctor-card';
+                    card.innerHTML = `
+                        <div class="doctor-img-container">
+                            <img src="${doc.image}" alt="${doc.name}">
+                        </div>
+                        <div class="doctor-info">
+                            <h3 class="doctor-name">${doc.name}</h3>
+                            <div class="doctor-spec">${doc.specialization}</div>
+                            <div class="doctor-hospital"><i class="fas fa-hospital"></i> ${doc.hospital}</div>
+                            
+                            <div class="doctor-meta">
+                                <span class="doctor-rating"><i class="fas fa-star"></i> ${doc.rating}</span>
+                                <span>${doc.experience} Exp</span>
+                            </div>
+                            
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+                                <div class="doctor-fees">₹${doc.fees}</div>
+                                <button class="btn-primary" onclick='openBookingModal(${JSON.stringify(doc)})'>Book Now</button>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            }
+
+            window.openBookingModal = function(doctor) {
+                selectedDoctor = doctor;
+                document.getElementById('modal-doctor-name').innerText = `Book with ${doctor.name}`;
+                document.getElementById('modal-doctor-details').innerText = `${doctor.specialization} • ₹${doctor.fees}`;
+                document.getElementById('pay-amount').innerText = `₹${doctor.fees}`;
+                
+                // Populate Time Slots
+                const timeSelect = document.getElementById('appointment-time');
+                timeSelect.innerHTML = '<option value="">Select a slot</option>';
+                doctor.availability.forEach(slot => {
+                    const option = document.createElement('option');
+                    option.value = slot;
+                    option.innerText = slot;
+                    timeSelect.appendChild(option);
+                });
+
+                // Set Date Min to Today
+                const dateInput = document.getElementById('appointment-date');
+                const today = new Date().toISOString().split('T')[0];
+                dateInput.min = today;
+                dateInput.value = today;
+
+                document.getElementById('booking-modal').style.display = 'flex';
+                
+                // Initialize Payment Element
+                initializePayment(doctor.fees, doctor.name);
+            };
+
+            window.closeBookingModal = function() {
+                document.getElementById('booking-modal').style.display = 'none';
+                document.getElementById('payment-element').innerHTML = ''; // Clear Stripe Element
+                document.getElementById('payment-message').classList.add('hidden');
+                document.getElementById('payment-message').innerText = '';
+            };
+            
+            window.closeSuccessModal = function() {
+                document.getElementById('success-modal').style.display = 'none';
+            };
+
+            async function initializePayment(amount, doctorName) {
+                const response = await fetch("/api/appointment/create-payment-intent", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ amount, doctorName }),
+                });
+                
+                const { clientSecret } = await response.json();
+                
+                const appearance = { theme: 'stripe' };
+                elements = stripe.elements({ appearance, clientSecret });
+                
+                const paymentElement = elements.create("payment");
+                paymentElement.mount("#payment-element");
+            }
+
+            document.getElementById("booking-form").addEventListener("submit", async (e) => {
+                e.preventDefault();
+                setLoading(true);
+                
+                const { error } = await stripe.confirmPayment({
+                    elements,
+                    confirmParams: {
+                        // Make sure to change this to your payment completion page or handle redirect
+                        return_url: window.location.href, // For demo, just reload same page
+                    },
+                    redirect: 'if_required' // We'll handle success manually without redirect for SPA feel
+                });
+
+                if (error) {
+                    showMessage(error.message);
+                    setLoading(false);
+                } else {
+                    // Success!
+                    setLoading(false);
+                    closeBookingModal();
+                    document.getElementById('success-modal').style.display = 'flex';
+                }
+            });
+
+            function showMessage(messageText) {
+                const messageContainer = document.querySelector("#payment-message");
+                messageContainer.classList.remove("hidden");
+                messageContainer.textContent = messageText;
+            }
+
+            function setLoading(isLoading) {
+                if (isLoading) {
+                    document.querySelector("#btn-pay-book").disabled = true;
+                    document.querySelector("#btn-pay-book").innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                } else {
+                    document.querySelector("#btn-pay-book").disabled = false;
+                    document.querySelector("#btn-pay-book").innerHTML = `Pay <span id="pay-amount">₹${selectedDoctor.fees}</span> & Book Video Call`;
+                }
+            }
+
+            // Check URL params
+            const urlParams = new URLSearchParams(window.location.search);
+            const typeParam = urlParams.get('type');
+
+            // Default Redirect Logic
+            if (!typeParam) {
+                const newUrl = new URL(window.location);
+                newUrl.searchParams.set('type', 'hospitals');
+                window.history.replaceState({}, '', newUrl);
+                updateView('hospitals');
+            } else {
+                updateView(typeParam);
+            }
+
+            // Listen for toggle change
+            radios.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    if (e.target.checked) {
+                        const newType = e.target.value;
+                        updateView(newType);
+                        const newUrl = new URL(window.location);
+                        newUrl.searchParams.set('type', newType);
+                        window.history.pushState({}, '', newUrl);
+                    }
+                });
+            });
+
+            // Diagnosis & Map Logic
+            function checkDiagnosis() {
+                const diagnosisData = localStorage.getItem('latestDiagnosis');
+                if (diagnosisData) {
+                    diagnosisAlert.style.display = 'block';
+                    emptyHospitals.style.display = 'none';
+                }
+            }
+
+            btnAnalyze.addEventListener('click', async () => {
+                const diagnosisData = JSON.parse(localStorage.getItem('latestDiagnosis'));
+                
+                // UI State
+                btnAnalyze.style.display = 'none';
+                analysisLoader.style.display = 'block';
+
+                try {
+                    // Call Backend
+                    const response = await fetch('/api/consultation/map-diagnosis', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ diagnosis: diagnosisData })
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        const mapping = result.mapping;
+                        
+                        // Update UI
+                        analysisLoader.style.display = 'none';
+                        diagnosisAlert.style.display = 'none'; // Hide alert after success
+                        mapContainer.style.display = 'block';
+                        placesList.style.display = 'block';
+                        
+                        recommendationTitle.innerText = `Recommended Facility: ${mapping.facilityType}`;
+                        recommendationReason.innerText = `${mapping.reasoning} (Search: "${mapping.searchKeywords}")`;
+                        
+                        // Init Map
+                        initMap(mapping.searchKeywords);
+                    } else {
+                        alert('Analysis failed. Please try again.');
+                        btnAnalyze.style.display = 'inline-flex';
+                        analysisLoader.style.display = 'none';
+                    }
+
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again.');
+                    btnAnalyze.style.display = 'inline-flex';
+                    analysisLoader.style.display = 'none';
+                }
+            });
+
+            function initMap(keyword) {
+                // Default to New York if geolocation fails
+                let userLocation = { lat: 40.7128, lng: -74.0060 };
+
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            userLocation = {
+                                lat: position.coords.latitude,
+                                lng: position.coords.longitude
+                            };
+                            renderMap(userLocation, keyword);
+                        },
+                        () => {
+                            console.log("Geolocation permission denied. Using default location.");
+                            renderMap(userLocation, keyword);
+                        }
+                    );
+                } else {
+                    renderMap(userLocation, keyword);
+                }
+            }
+
+            function renderMap(location, keyword) {
+                const map = new google.maps.Map(document.getElementById("map"), {
+                    center: location,
+                    zoom: 14,
+                });
+
+                const service = new google.maps.places.PlacesService(map);
+                
+                const request = {
+                    location: location,
+                    radius: '5000',
+                    keyword: keyword,
+                    openNow: true
+                };
+
+                service.nearbySearch(request, (results, status) => {
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                        placesList.innerHTML = '<h3>Nearby Facilities</h3>';
+                        
+                        results.forEach((place, index) => {
+                            // Add marker
+                            new google.maps.Marker({
+                                map: map,
+                                position: place.geometry.location,
+                                title: place.name
+                            });
+                            
+                            // Add list item
+                            if (index < 5) { // Show top 5
+                                const placeCard = document.createElement('div');
+                                placeCard.className = 'place-card';
+                                placeCard.innerHTML = `
+                                    <div style="font-weight: 600; font-size: 1.1rem;">${place.name}</div>
+                                    <div style="color: #718096; font-size: 0.9rem; margin-top: 0.2rem;">
+                                        <i class="fas fa-map-marker-alt"></i> ${place.vicinity}
+                                    </div>
+                                    <div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 1rem;">
+                                        ${place.rating ? `<span style="color: #f6ad55;"><i class="fas fa-star"></i> ${place.rating}</span>` : ''}
+                                        ${place.opening_hours && place.opening_hours.open_now ? '<span style="color: #48bb78; font-size: 0.85rem; font-weight: 500;">Open Now</span>' : ''}
+                                    </div>
+                                `;
+                                placesList.appendChild(placeCard);
+                            }
+                        });
+                    } else {
+                        placesList.innerHTML = '<p>No places found nearby matching the criteria.</p>';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

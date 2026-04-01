@@ -1,0 +1,26 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\begin{document}
+
+\section*{Structured Abstract}
+
+\textbf{Background:} Digital triage tools, telemedicine platforms, and online insurance portals are often deployed as separate systems, leaving patients to navigate fragmented workflows when deciding whether, where, and how to seek care. At the same time, the adoption of machine learning models in clinical decision support raises concerns about explainability, calibration, fairness, and the need for human oversight.
+
+\bigskip
+
+\textbf{Objective:} This study aimed to design and evaluate FirstContact, a human-in-the-loop clinical decision support system for digital triage that integrates an AI-driven triage engine with teleconsultation and insurance guidance, while explicitly incorporating explainability, probability calibration, fairness assessment, and sensitivity--specificity tradeoff analysis.
+
+\bigskip
+
+\textbf{Methods:} We implemented a web-based platform that collects demographics, vital signs, laboratory values, symptoms, family history, and lifestyle factors through a guided questionnaire. These inputs are transformed into a multi-modal feature vector and passed to a Random Forest classifier that outputs probabilistic condition predictions. The architecture comprises a web front end, a Node.js/Express back end, a Python-based machine learning engine, and a MongoDB data layer. We evaluated triage performance on a 50{,}000-record synthetic dataset reflecting common chronic and acute conditions, with logistic regression and a single decision tree as baselines. We reported accuracy, macro-averaged precision, recall, and F1-score, with 95\% bootstrap confidence intervals and McNemar's test for statistical significance. We quantified calibration using the Brier score and a reliability diagram, analysed sensitivity--specificity--positive predictive value tradeoffs under cost-sensitive thresholds, and conducted an ablation study on feature groups. A small-scale external validation was performed on a public cardiovascular risk dataset. Fairness was assessed across sex and age subgroups, and SHAP-style feature attribution was used to provide global and local explanations. System-level metrics, including latency and resource utilisation, and a human-in-the-loop workflow for clinician oversight were also evaluated.
+
+\bigskip
+
+\textbf{Results:} On the synthetic test set, the Random Forest achieved accuracy of 0.88, macro precision 0.84, macro recall 0.82, and macro F1-score 0.83, outperforming logistic regression (accuracy 0.78, macro F1 0.72) and a single decision tree (accuracy 0.80, macro F1 0.74). Ninety-five percent confidence intervals for accuracy were [0.74, 0.82] for logistic regression, [0.76, 0.84] for the decision tree, and [0.86, 0.90] for the Random Forest; McNemar's test indicated that the improvement over logistic regression was statistically significant (p $<$ 0.01). On the external cardiovascular dataset, the Random Forest achieved accuracy 0.82 and macro F1-score 0.79 versus 0.76 and 0.72 for logistic regression. The Random Forest exhibited a Brier score of 0.12 and a reliability curve close to the ideal diagonal, with mild overconfidence at high predicted probabilities that was mitigated by isotonic regression. Sensitivity--specificity analysis for cardiovascular risk showed that thresholds between 0.30 and 0.40 provided a favourable tradeoff, for example sensitivity 0.94, specificity 0.62, and positive predictive value 0.68 at threshold 0.35. The ablation study demonstrated that removing laboratory features reduced macro F1 from 0.83 to 0.78, and restricting to demographics and vitals further reduced performance to 0.74. Fairness analyses showed broadly comparable accuracy and sensitivity across sex and age groups in the synthetic dataset. SHAP-style feature importance highlighted systolic blood pressure, age, fasting glucose, body mass index, lipids, smoking status, and family history of cardiovascular disease as key drivers, aligning with clinical expectations. End-to-end median response time for triage requests was 420 ms, with the 95th percentile under 800 ms.
+
+\bigskip
+
+\textbf{Conclusions:} FirstContact demonstrates how an AI-driven triage engine can be integrated into a human-in-the-loop clinical decision support workflow that spans specialist recommendation, teleconsultation, and insurance guidance. By combining ensemble learning with explainability, calibration, fairness assessment, and sensitivity--specificity analysis, the system addresses key requirements for trustworthy clinical AI in digital health. While current results are based on synthetic and public datasets, the informatics framework and workflow design provide a practical basis for future validation on de-identified clinical data and for deployment in routine care settings.
+
+\end{document}
+

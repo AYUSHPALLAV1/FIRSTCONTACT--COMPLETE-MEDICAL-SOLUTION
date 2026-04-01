@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FirstContact - Medidose AI Diagnosis</title>
+    <link rel="stylesheet" href="home.css"> <!-- Base styles -->
+    <link rel="stylesheet" href="medidose.css"> <!-- Specific styles -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="home.html" class="logo" style="text-decoration: none;">
+            <i class="fas fa-heartbeat"></i> FirstContact
+        </a>
+        <div class="nav-links">
+            <a href="medidose.html" class="nav-btn" style="color: var(--primary-color);">Medidose</a>
+            <div class="dropdown">
+                <a href="consultation.html" class="nav-btn">Consultation <i class="fas fa-caret-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="consultation.html?type=appointment">Appointment</a>
+                    <a href="consultation.html?type=hospitals">Hospitals Nearby</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a href="insurance.html" class="nav-btn">Insurance <i class="fas fa-caret-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="insurance.html?type=with">With Insurance</a>
+                    <a href="insurance.html?type=without">Without Insurance</a>
+                </div>
+            </div>
+            <a href="profile.html" class="nav-btn user-info-btn" id="userInfoBtn"><i class="fas fa-user-circle"></i> User Info</a>
+        </div>
+    </nav>
+
+    <div class="main-layout">
+        <div class="video-sidebar" id="videoSidebar">
+            <div class="video-wrapper">
+                <video id="videoIntro" autoplay loop muted playsinline class="intro-video">
+                    <source src="intro_video.mp4" type="video/mp4">
+                </video>
+                <video id="videoSymptoms" loop muted playsinline class="intro-video" style="display: none;">
+                    <source src="medidose_symptoms.mp4" type="video/mp4">
+                </video>
+                <video id="videoFamily" loop muted playsinline class="intro-video" style="display: none;">
+                    <source src="medidose_family.mp4" type="video/mp4">
+                </video>
+                <video id="videoLifestyle" loop muted playsinline class="intro-video" style="display: none;">
+                    <source src="medidose_lifestyle.mp4" type="video/mp4">
+                </video>
+                <video id="videoResults" loop muted playsinline class="intro-video" style="display: none;">
+                    <source src="medidose_results.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+        <div class="content-area">
+            <div class="container">
+                <!-- Stepper Removed as per request -->
+                <!-- Form Section -->
+        <form id="diagnosisForm" class="medidose-form">
+            
+            <!-- Step 1: Basic Information -->
+            <div class="form-step active" data-step="1">
+                <div class="step-header">
+                    <div class="step-icon"><i class="fas fa-user"></i></div>
+                    <div>
+                        <h2>Basic Information</h2>
+                        <p class="step-desc">Tell us about yourself</p>
+                    </div>
+                </div>
+                
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Age</label>
+                        <input type="number" name="age" min="0" max="120" placeholder="Enter your age" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <select name="gender" required>
+                            <option value="">Select gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Weight (kg)</label>
+                        <input type="number" name="weight" min="0" step="0.1" placeholder="Enter weight" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Height (cm)</label>
+                        <input type="number" name="height" min="0" placeholder="Enter height" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Vital Signs & Blood Tests -->
+            <div class="form-step" data-step="2">
+                <div class="step-header">
+                    <div class="step-icon"><i class="fas fa-heartbeat"></i></div>
+                    <div>
+                        <h2>Vital Signs</h2>
+                        <p class="step-desc">Enter your current vitals and lab results (if any)</p>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Systolic BP</label>
+                        <input type="number" name="systolicBP" placeholder="e.g. 120" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Diastolic BP</label>
+                        <input type="number" name="diastolicBP" placeholder="e.g. 80" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Heart Rate (BPM)</label>
+                        <input type="number" name="heartRate" placeholder="e.g. 72" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Temp (°C)</label>
+                        <input type="number" name="bodyTemp" step="0.1" placeholder="e.g. 37.0" required>
+                    </div>
+                </div>
+
+                <h4 style="margin: 2rem 0 1rem; color: var(--primary-dark); border-top: 1px solid #eee; padding-top: 1.5rem;">
+                    <i class="fas fa-vial"></i> Blood Test Results (Optional)
+                </h4>
+                <div class="grid-3">
+                    <div class="form-group">
+                        <label>Glucose (mg/dL)</label>
+                        <input type="number" name="glucose" placeholder="e.g. 100">
+                    </div>
+                    <div class="form-group">
+                        <label>Cholesterol (mg/dL)</label>
+                        <input type="number" name="cholesterol" placeholder="e.g. 180">
+                    </div>
+                    <div class="form-group">
+                        <label>Hemoglobin (g/dL)</label>
+                        <input type="number" name="hemoglobin" step="0.1" placeholder="e.g. 14">
+                    </div>
+                    <div class="form-group">
+                        <label>WBC Count</label>
+                        <input type="number" name="wbc" placeholder="e.g. 6000">
+                    </div>
+                    <div class="form-group">
+                        <label>Platelet Count</label>
+                        <input type="number" name="platelet" placeholder="e.g. 250000">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Symptoms -->
+            <div class="form-step" data-step="3">
+                <div class="step-header">
+                    <div class="step-icon"><i class="fas fa-notes-medical"></i></div>
+                    <div>
+                        <h2>Symptoms</h2>
+                        <p class="step-desc">Select all symptoms you are experiencing</p>
+                    </div>
+                </div>
+
+                <div class="checkbox-group">
+                    <label class="checkbox-item"><input type="checkbox" name="symptoms" value="Fever"> Fever</label>
+                    <label class="checkbox-item"><input type="checkbox" name="symptoms" value="Shortness of breath"> Shortness of breath</label>
+                    <label class="checkbox-item"><input type="checkbox" name="symptoms" value="Fatigue"> Fatigue</label>
+                    <label class="checkbox-item"><input type="checkbox" name="symptoms" value="Headache"> Headache</label>
+                    <label class="checkbox-item"><input type="checkbox" name="symptoms" value="Sore throat"> Sore throat</label>
+                    <label class="checkbox-item"><input type="checkbox" name="symptoms" value="Muscle pain"> Muscle pain</label>
+                    <label class="checkbox-item"><input type="checkbox" name="symptoms" value="Chest pain"> Chest pain</label>
+                    <label class="checkbox-item"><input type="checkbox" name="symptoms" value="Abdominal pain"> Abdominal pain</label>
+                    <label class="checkbox-item"><input type="checkbox" name="symptoms" value="Nausea"> Nausea</label>
+                    <label class="checkbox-item"><input type="checkbox" name="symptoms" value="Vomiting"> Vomiting</label>
+                    <label class="checkbox-item"><input type="checkbox" name="symptoms" value="Diarrhea"> Diarrhea</label>
+                    <label class="checkbox-item"><input type="checkbox" name="symptoms" value="Loss of taste or smell"> Loss of taste/smell</label>
+                    <label class="checkbox-item"><input type="checkbox" name="symptoms" value="Rash"> Rash</label>
+                    <label class="checkbox-item"><input type="checkbox" name="symptoms" value="Joint pain"> Joint pain</label>
+                    <label class="checkbox-item"><input type="checkbox" name="symptoms" value="Dizziness"> Dizziness</label>
+                    <label class="checkbox-item"><input type="checkbox" name="symptoms" value="Cough"> Cough</label>
+                </div>
+            </div>
+
+            <!-- Step 4: Family History -->
+            <div class="form-step" data-step="4">
+                <div class="step-header">
+                    <div class="step-icon"><i class="fas fa-users"></i></div>
+                    <div>
+                        <h2>Family History</h2>
+                        <p class="step-desc">Select any conditions present in your immediate family</p>
+                    </div>
+                </div>
+
+                <div class="checkbox-group">
+                    <label class="checkbox-item"><input type="checkbox" name="familyHistory" value="Diabetes"> Diabetes</label>
+                    <label class="checkbox-item"><input type="checkbox" name="familyHistory" value="Heart disease"> Heart disease</label>
+                    <label class="checkbox-item"><input type="checkbox" name="familyHistory" value="Hypertension"> Hypertension</label>
+                    <label class="checkbox-item"><input type="checkbox" name="familyHistory" value="Cancer"> Cancer</label>
+                    <label class="checkbox-item"><input type="checkbox" name="familyHistory" value="Stroke"> Stroke</label>
+                    <label class="checkbox-item"><input type="checkbox" name="familyHistory" value="Asthma"> Asthma</label>
+                    <label class="checkbox-item"><input type="checkbox" name="familyHistory" value="Alzheimer's disease"> Alzheimer's</label>
+                    <label class="checkbox-item"><input type="checkbox" name="familyHistory" value="Arthritis"> Arthritis</label>
+                    <label class="checkbox-item"><input type="checkbox" name="familyHistory" value="Depression"> Depression</label>
+                    <label class="checkbox-item"><input type="checkbox" name="familyHistory" value="Obesity"> Obesity</label>
+                </div>
+            </div>
+
+            <!-- Step 5: Lifestyle Factors -->
+            <div class="form-step" data-step="5">
+                <div class="step-header">
+                    <div class="step-icon"><i class="fas fa-running"></i></div>
+                    <div>
+                        <h2>Lifestyle Factors</h2>
+                        <p class="step-desc">Select applicable lifestyle factors</p>
+                    </div>
+                </div>
+
+                <div class="checkbox-group">
+                    <label class="checkbox-item"><input type="checkbox" name="lifestyle" value="Smoking"> Smoking</label>
+                    <label class="checkbox-item"><input type="checkbox" name="lifestyle" value="Alcohol consumption"> Alcohol</label>
+                    <label class="checkbox-item"><input type="checkbox" name="lifestyle" value="Sedentary lifestyle"> Sedentary</label>
+                    <label class="checkbox-item"><input type="checkbox" name="lifestyle" value="Regular exercise"> Regular Exercise</label>
+                    <label class="checkbox-item"><input type="checkbox" name="lifestyle" value="Balanced diet"> Balanced Diet</label>
+                    <label class="checkbox-item"><input type="checkbox" name="lifestyle" value="High stress levels"> High Stress</label>
+                    <label class="checkbox-item"><input type="checkbox" name="lifestyle" value="Poor sleep"> Poor Sleep</label>
+                    <label class="checkbox-item"><input type="checkbox" name="lifestyle" value="Drug use"> Drug Use</label>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="form-navigation">
+                <button type="button" id="prevBtn" class="nav-btn prev-btn" disabled>
+                    <i class="fas fa-chevron-left"></i> Previous
+                </button>
+                <div class="step-indicator-text">1 of 5</div>
+                <button type="button" id="nextBtn" class="nav-btn next-btn">
+                    Next <i class="fas fa-chevron-right"></i>
+                </button>
+                <button type="submit" id="submitBtn" class="nav-btn submit-btn" style="display: none;">
+                    <i class="fas fa-microchip"></i> Analyze Health Data
+                </button>
+            </div>
+        </form>
+
+        <!-- Loading Indicator -->
+        <div id="loader" class="loader"></div>
+
+        <!-- Results Section -->
+        <div id="results" class="results-section">
+            <h2 style="margin-bottom: 1.5rem;">Analysis Results</h2>
+            <div id="resultsContent">
+                <!-- Results will be injected here via JS -->
+            </div>
+            
+            <div class="action-buttons">
+                <button onclick="window.location.reload()" class="submit-btn secondary" style="width: auto; background: #718096;">Start New Diagnosis</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Emergency Popup -->
+    <div class="emergency-overlay" id="emergencyOverlay"></div>
+    <div class="emergency-popup" id="emergencyPopup">
+        <i class="fas fa-exclamation-triangle" style="font-size: 4rem; color: var(--danger-color); margin-bottom: 1rem;"></i>
+        <h2 style="color: var(--danger-color);">EMERGENCY ALERT</h2>
+        <p style="font-size: 1.2rem; margin-bottom: 2rem;">
+            The analysis suggests a potential <strong>SEVERE condition</strong>. 
+            Immediate medical attention is recommended.
+        </p>
+        <div class="action-buttons">
+            <a href="consultation.html" class="action-btn btn-consult"><i class="fas fa-user-md"></i> Consult Doctor Now</a>
+            <a href="insurance.html" class="action-btn btn-insurance"><i class="fas fa-file-invoice-dollar"></i> Check Insurance</a>
+        </div>
+        <button onclick="closeEmergency()" style="margin-top: 1rem; background: none; border: none; color: #718096; cursor: pointer;">Dismiss</button>
+    </div>
+
+    <script src="medidose.js"></script>
+    <script>
+        // Check if user is logged in
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = 'index.html';
+        }
+        
+        // Update user info button text
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user) {
+            document.getElementById('userInfoBtn').innerHTML = `<i class="fas fa-user-circle"></i> ${user.name}`;
+        }
+    </script>
+</body>
+</html>

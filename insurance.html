@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FirstContact - Insurance</title>
+    <link rel="stylesheet" href="home.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh;
+            background-color: var(--bg-white);
+        }
+        
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 3rem 5%;
+        }
+
+        .insurance-container {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+        }
+
+        .toggle-container {
+            margin-bottom: 2.5rem;
+        }
+
+        .toggle-label {
+            font-size: 1.1rem;
+            margin-right: 1rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        select {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 50px;
+            border: 2px solid var(--primary-color);
+            background-color: white;
+            color: var(--text-dark);
+            cursor: pointer;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        select:hover, select:focus {
+            box-shadow: 0 0 0 3px rgba(79, 209, 197, 0.2);
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease forwards;
+            text-align: left;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .content-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+            text-align: center;
+        }
+
+        .content-section p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        /* --- New Styles for Insurance Analysis --- */
+        
+        .intro-card {
+            background: linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border-left: 5px solid var(--primary-color);
+        }
+
+        /* --- Policy Listing Styles --- */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            align-items: flex-end;
+            border: 1px solid #e2e8f0;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+            text-align: left;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .filter-group input, .filter-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .small-btn {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            height: fit-content;
+        }
+
+        .policy-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .policy-card {
+            display: flex;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            text-align: left;
+            position: relative;
+        }
+
+        .policy-card:hover {
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+            border-color: var(--primary-color);
+        }
+
+        .policy-image {
+            width: 150px;
+            height: 150px;
+            flex-shrink: 0;
+            background: #f0fff4;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+            font-size: 3rem;
+            color: var(--primary-color);
+        }
+        
+        .policy-type-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .type-gov { background: #e6fffa; color: #2c7a7b; }
+        .type-pvt { background: #fff5f5; color: #c53030; }
+
+        .policy-content {
+            flex: 1;
+        }
+
+        .policy-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .policy-rating {
+            color: #fff;
+            background: #38a169;
+            padding: 0.1rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .policy-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 1rem 0;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .policy-features li {
+            margin-bottom: 0.3rem;
+        }
+        
+        .policy-features li::before {
+            content: "•";
+            color: var(--text-light);
+            margin-right: 0.5rem;
+        }
+
+        .policy-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-top: 0.5rem;
+        }
+
+        .policy-actions {
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .view-btn {
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: 600;
+            border: 1px solid var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .view-btn:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .policy-card {
+                flex-direction: column;
+            }
+            .policy-image {
+                width: 100%;
+                height: 120px;
+                margin-bottom: 1rem;
+            }
+        }
+
+        .intro-card h3 {
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Status Styles */
+        .status-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .status-covered {
+            background-color: #c6f6d5;
+            color: #276749;
+        }
+        
+        .status-not-covered {
+            background-color: #fed7d7;
+            color: #9b2c2c;
+        }
+        
+        .result-section {
+            background: #f7fafc;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        .result-section h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .intro-card p {
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+            line-height: 1.6;
+            font-style: normal;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input[type="text"]:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        .file-upload-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload-wrapper input[type=file] {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px dashed #cbd5e0;
+            border-radius: 8px;
+            background: var(--bg-alt);
+            cursor: pointer;
+        }
+
+        .cta-button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            width: 100%;
+            display: block;
+        }
+
+        .cta-button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Loader */
+        .hidden { display: none !important; }
+        
+        #loadingIndicator {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Results */
+        .results-section {
+            margin-top: 2rem;
+            border-top: 2px solid var(--bg-alt);
+            padding-top: 2rem;
+        }
+
+        .result-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .covered { background-color: #48bb78; } /* Green */
+        .not-covered { background-color: #f56565; } /* Red */
+        .uncertain { background-color: #ed8936; } /* Orange */
+
+        .result-box {
+            background: var(--bg-alt);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+        
+        .result-box h4 {
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+
+        .result-box p {
+            font-style: normal;
+            font-size: 1rem;
+        }
+
+        .result-list {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+        }
+        
+        .result-list li {
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+            color: var(--text-light);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="home.html" class="logo" style="text-decoration: none;">
+            <i class="fas fa-heartbeat"></i> FirstContact
+        </a>
+        <div class="nav-links">
+            <a href="medidose.html" class="nav-btn">Medidose</a>
+            <div class="dropdown">
+                <a href="consultation.html" class="nav-btn">Consultation <i class="fas fa-caret-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="consultation.html?type=appointment">Appointment</a>
+                    <a href="consultation.html?type=hospitals">Hospitals Nearby</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a href="insurance.html" class="nav-btn">Insurance <i class="fas fa-caret-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="insurance.html?type=with">With Insurance</a>
+                    <a href="insurance.html?type=without">Without Insurance</a>
+                </div>
+            </div>
+            <a href="profile.html" class="nav-btn user-info-btn" id="userInfoBtn"><i class="fas fa-user-circle"></i> User Info</a>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="insurance-container">
+            <h1>Insurance Services</h1>
+            
+            <div class="toggle-container">
+                <label for="coverageType" class="toggle-label">Select Coverage Status:</label>
+                <select id="coverageType">
+                    <option value="with">With Insurance</option>
+                    <option value="without">Without Insurance</option>
+                </select>
+            </div>
+
+            <div id="with-insurance" class="content-section">
+                <!-- Rhetorical Intro -->
+                <div class="intro-card">
+                    <h3><i class="fas fa-file-invoice-dollar"></i> Policy Decoder & Coverage Checker</h3>
+                    <p><strong>Confused by complex insurance jargon?</strong> You're not alone. Many policyholders miss out on benefits simply because they don't know what's covered.</p>
+                    <p>Upload your policy document below, enter your condition, and our AI will instantly scan the fine print to tell you if you're covered and how to proceed.</p>
+                </div>
+
+                <!-- Upload Form -->
+                <form id="policyForm">
+                    <div class="form-group">
+                        <label for="diseaseName"><i class="fas fa-notes-medical"></i> Condition / Disease to Check</label>
+                        <input type="text" id="diseaseName" name="diseaseName" placeholder="e.g. Cataract Surgery, Dengue, Covid-19" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="policyPdf"><i class="fas fa-file-pdf"></i> Upload Policy Document (PDF)</label>
+                        <div class="file-upload-wrapper">
+                            <input type="file" id="policyPdf" name="policyPdf" accept=".pdf" required>
+                        </div>
+                        <small style="color: #718096; display: block; margin-top: 0.5rem;">We'll extract text from your PDF to analyze coverage details.</small>
+                    </div>
+
+                    <button type="submit" class="cta-button">Analyze Policy <i class="fas fa-magic"></i></button>
+                </form>
+
+                <!-- Loading State -->
+                <div id="loadingIndicator" class="hidden">
+                    <div class="loader"></div>
+                    <p><strong>Analyzing your policy...</strong><br>Scanning for coverage clauses, exclusions, and claim procedures.</p>
+                </div>
+
+                <!-- Results Section -->
+                <div id="analysisResult" class="results-section hidden">
+                    <div id="resultContent"></div>
+                </div>
+            </div>
+
+            <div id="without-insurance" class="content-section">
+                <h2>Find Your Perfect Health Cover</h2>
+                
+                <div class="filter-bar">
+                    <div class="filter-group">
+                        <label>Policy Type:</label>
+                        <select id="policyTypeFilter">
+                            <option value="all">All Plans</option>
+                            <option value="government">Government Schemes</option>
+                            <option value="private">Private Insurance</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Verify Coverage For (Disease):</label>
+                        <input type="text" id="diseaseFilter" placeholder="e.g. Dengue, Cancer, Diabetes (AI Verified)">
+                    </div>
+                    <button id="findPoliciesBtn" class="cta-button small-btn">Find Policies <i class="fas fa-search"></i></button>
+                </div>
+
+                <div id="loadingPolicies" class="hidden" style="margin: 2rem 0;">
+                    <div class="loader"></div>
+                    <p>Fetching and analyzing policies...</p>
+                </div>
+
+                <div id="policyResults" class="policy-list">
+                    <div style="text-align: center; color: #718096; margin-top: 2rem;">
+                        <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                        <p>Select filters and click "Find Policies" to see available options.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <i class="fas fa-heartbeat"></i> FirstContact
+            </div>
+            <p class="copyright">© 2026 FirstContact. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Check if user is logged in
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = 'index.html';
+        }
+        
+        // Update user info button text
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user) {
+            document.getElementById('userInfoBtn').innerHTML = `<i class="fas fa-user-circle"></i> ${user.name}`;
+        }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const selectElement = document.getElementById('coverageType');
+            const withSection = document.getElementById('with-insurance');
+            const withoutSection = document.getElementById('without-insurance');
+
+            // Function to update view based on type
+            function updateView(type) {
+                // Reset
+                withSection.classList.remove('active');
+                withoutSection.classList.remove('active');
+
+                if (type === 'without') {
+                    withoutSection.classList.add('active');
+                    selectElement.value = 'without';
+                    // Optional: Auto-fetch on first load
+                    if (document.getElementById('policyResults').children.length <= 1) {
+                         // document.getElementById('findPoliciesBtn').click();
+                    }
+                } else {
+                    withSection.classList.add('active');
+                    selectElement.value = 'with';
+                }
+            }
+
+            // Listen for dropdown change
+            selectElement.addEventListener('change', (e) => {
+                updateView(e.target.value);
+            });
+
+            // Check URL params
+            const urlParams = new URLSearchParams(window.location.search);
+            const typeParam = urlParams.get('type');
+            if (typeParam) {
+                updateView(typeParam);
+            } else {
+                updateView('with'); // Default
+            }
+
+            // --- With Insurance Logic (Existing) ---
+            const form = document.getElementById('policyForm');
+            const loading = document.getElementById('loadingIndicator');
+            const resultsSection = document.getElementById('analysisResult');
+            const resultContent = document.getElementById('resultContent');
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                // Reset UI
+                resultsSection.classList.add('hidden');
+                loading.classList.remove('hidden');
+                resultContent.innerHTML = '';
+
+                const formData = new FormData(form);
+
+                try {
+                    const response = await fetch('/api/insurance/analyze', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const data = await response.json();
+
+                    loading.classList.add('hidden');
+
+                    if (!response.ok) {
+                        throw new Error(data.message || `Server returned ${response.status}`);
+                    }
+
+                    if (data.success) {
+                        displayResults(data.data);
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+
+                } catch (error) {
+                    console.error('Error:', error);
+                    loading.classList.add('hidden');
+                    alert(error.message || 'An error occurred while processing your request.');
+                }
+            });
+
+            function displayResults(data) {
+                resultsSection.classList.remove('hidden');
+                
+                const isCoveredClass = data.isCovered ? 'status-covered' : 'status-not-covered';
+                const statusIcon = data.isCovered ? '<i class="fas fa-check-circle"></i>' : '<i class="fas fa-times-circle"></i>';
+                const statusText = data.isCovered ? 'Covered' : 'Not Covered';
+
+                let availmentHtml = '';
+                if (data.availmentProcess && data.availmentProcess.length > 0) {
+                    availmentHtml = `
+                        <div class="result-section">
+                            <h4><i class="fas fa-list-ol"></i> Availment Process</h4>
+                            <ol>
+                                ${data.availmentProcess.map(step => `<li>${step}</li>`).join('')}
+                            </ol>
+                        </div>
+                    `;
+                }
+
+                resultContent.innerHTML = `
+                    <div class="status-header ${isCoveredClass}">
+                        ${statusIcon}
+                        <h3>${statusText}</h3>
+                    </div>
+                    
+                    <div class="result-section">
+                        <h4><i class="fas fa-info-circle"></i> Coverage Details</h4>
+                        <p>${data.coverageDetails}</p>
+                    </div>
+
+                    ${availmentHtml}
+
+                    <div class="result-section">
+                        <h4><i class="fas fa-exclamation-triangle"></i> Limitations & Exclusions</h4>
+                        <p>${data.limitations}</p>
+                    </div>
+                `;
+            }
+
+            // --- Without Insurance Logic (New) ---
+            const findPoliciesBtn = document.getElementById('findPoliciesBtn');
+            const policyResults = document.getElementById('policyResults');
+            const loadingPolicies = document.getElementById('loadingPolicies');
+
+            findPoliciesBtn.addEventListener('click', async () => {
+                const type = document.getElementById('policyTypeFilter').value;
+                const disease = document.getElementById('diseaseFilter').value;
+
+                // Show loading
+                policyResults.innerHTML = '';
+                loadingPolicies.classList.remove('hidden');
+
+                try {
+                    const response = await fetch('/api/insurance/available-policies', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ type, disease })
+                    });
+
+                    const res = await response.json();
+                    
+                    loadingPolicies.classList.add('hidden');
+
+                    if (res.success && res.data.length > 0) {
+                        renderPolicies(res.data);
+                    } else {
+                        policyResults.innerHTML = `
+                            <div style="text-align: center; margin-top: 2rem;">
+                                <h3>No matching policies found.</h3>
+                                <p>Try adjusting your filters or search terms.</p>
+                            </div>
+                        `;
+                    }
+                } catch (error) {
+                    console.error(error);
+                    loadingPolicies.classList.add('hidden');
+                    alert('Failed to fetch policies. Please try again.');
+                }
+            });
+
+            function renderPolicies(policies) {
+                policyResults.innerHTML = policies.map(policy => `
+                    <div class="policy-card">
+                        <span class="policy-type-badge ${policy.type === 'Government' ? 'type-gov' : 'type-pvt'}">
+                            ${policy.type}
+                        </span>
+                        <div class="policy-image">
+                            <i class="fas ${policy.type === 'Government' ? 'fa-landmark' : 'fa-shield-alt'}"></i>
+                        </div>
+                        <div class="policy-content">
+                            <h3 class="policy-title">${policy.name}</h3>
+                            <div class="policy-rating">
+                                4.5 <i class="fas fa-star" style="font-size: 0.7rem;"></i>
+                            </div>
+                            <ul class="policy-features">
+                                ${policy.features.map(f => `<li>${f}</li>`).join('')}
+                                <li>Coverage: ${policy.coverage}</li>
+                            </ul>
+                            <div class="policy-price">
+                               ${policy.type === 'Government' ? 'Free / Subsidized' : 'Premium varies'}
+                            </div>
+                            <div class="policy-actions">
+                                <a href="${policy.link}" target="_blank" class="view-btn">View Official Site</a>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+        });
+    </script>
+</body>
+</html>

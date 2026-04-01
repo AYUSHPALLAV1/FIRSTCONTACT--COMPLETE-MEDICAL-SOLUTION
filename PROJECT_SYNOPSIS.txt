@@ -1,0 +1,139 @@
+================================================================================
+                               PROJECT SYNOPSIS
+================================================================================
+
+1. TITLE
+--------------------------------------------------------------------------------
+FirstContact: Digital Healthcare Accessibility and AI-Driven Preliminary Diagnosis
+
+2. ABSTRACT
+--------------------------------------------------------------------------------
+"FirstContact" is an integrated digital healthcare platform designed to streamline 
+the patient journey from symptom onset to professional medical consultation. 
+By utilizing a Random Forest-based Machine Learning model ("Medidose"), the system 
+provides users with an immediate, probabilistic assessment of potential conditions 
+based on vitals and symptoms. Unlike standalone symptom checkers, this platform 
+seamlessly bridges the gap to actionable care by incorporating a doctor appointment 
+booking system, a hospital locator, and an insurance policy analyzer. The project 
+aims to democratize access to preliminary healthcare guidance, reduce unnecessary 
+hospital visits, and improve health literacy through a unified, user-friendly 
+web interface.
+
+3. PROBLEM STATEMENT
+--------------------------------------------------------------------------------
+The current healthcare ecosystem suffers from significant inefficiencies:
+1. **Overcrowding**: Emergency rooms and clinics are often burdened with 
+   non-critical cases that could have been managed at home or by a specialist.
+2. **Accessibility**: Patients in remote or underserved areas lack immediate 
+   access to diagnostic expertise.
+3. **Fragmentation**: The journey from realizing a symptom exists to finding a 
+   doctor and understanding insurance coverage involves disjointed services, 
+   leading to delayed treatment.
+4. **Information Overload**: Patients searching symptoms online often encounter 
+   worst-case scenarios (cyberchondria), lacking a structured, probability-based 
+   assessment.
+
+4. SCOPE OF THE PROJECT
+--------------------------------------------------------------------------------
+The scope of "FirstContact" includes:
+- **Diagnostic Module**: Developing a supervised learning model (Random Forest) 
+  trained on synthetic clinical data to predict diseases from user inputs (Age, 
+  BMI, Vitals, Symptoms).
+- **Telemedicine Integration**: Creating a platform for browsing doctor profiles 
+  and booking appointments.
+- **Location Services**: Integrating geolocation APIs to find nearby hospitals.
+- **Financial Guidance**: Implementing a text-analysis feature for insurance 
+  policy documents to check for disease coverage.
+- **Web Interface**: A responsive, secure (JWT-authenticated) frontend accessible 
+  via standard web browsers.
+
+5. RESEARCH GAP IDENTIFIED
+--------------------------------------------------------------------------------
+Review of existing systems (WebMD, Ada, Babylon Health) reveals:
+- **Lack of Integration**: Most tools stop at diagnosis. They do not close the 
+  loop by connecting the user to a specific doctor or checking their specific 
+  insurance policy.
+- **Black-Box nature**: Many commercial systems do not disclose their confidence 
+  metrics.
+- **Static Rules**: Older systems rely on rigid decision trees that fail when 
+  data is incomplete or noisy, whereas ensemble methods like Random Forest offer 
+  better robustness.
+
+6. OBJECTIVE
+--------------------------------------------------------------------------------
+The primary objectives are:
+1. To develop a Machine Learning model capable of predicting potential diseases 
+   with >90% accuracy based on structured symptom data.
+2. To reduce the time-to-consultation by integrating direct doctor booking.
+3. To provide transparency in AI predictions by displaying confidence scores.
+4. To create a holistic platform that addresses clinical, logistical, and 
+   financial aspects of healthcare in a single session.
+
+7. ARCHITECTURE DIAGRAM
+--------------------------------------------------------------------------------
+
+      +--------+
+      |  User  |
+      +----+---+
+           |
+           v
++------------------------+
+|   Frontend Interface   |  (HTML5, CSS3, Vanilla JS)
+|  (Responsive Design)   |
++----------+-------------+
+           | HTTP / REST
+           v
++------------------------+
+|    Node.js Backend     |  (Express Framework)
+|   (Controller Logic)   |
++----+-----+------+------+
+     |     |      |
+     |     |      +------------>  External APIs (Google Maps, Stripe)
+     |     |
+     |     v
+     |   +------------------+
+     |   | MongoDB Database |  (Users, Doctors, Appointments, Policies)
+     |   +------------------+
+     |
+     v
++------------------------+
+|   Python ML Engine     |  (Scikit-learn, Pandas, NumPy)
+|   (Child Process)      |  (Random Forest Model .pkl)
++------------------------+
+
+8. LIMITATIONS OF EXISTING SYSTEM
+--------------------------------------------------------------------------------
+- **High Latency**: Traditional appointment booking often requires phone calls 
+  and long wait times.
+- **Generic Advice**: Search engines provide generic medical advice that doesn't 
+  account for individual vitals like BMI or Age.
+- **Data Privacy**: Many free online tools sell user data; they lack secure, 
+  authenticated sessions for history tracking.
+- **Disconnect**: Diagnosis tools don't know about local hospital availability 
+  or the user's insurance constraints.
+
+9. PROPOSED SYSTEM
+--------------------------------------------------------------------------------
+The "FirstContact" system proposes a hybrid solution:
+- **Intelligent Triage**: Uses AI to filter critical vs. non-critical cases 
+  instantly.
+- **Full-Stack Integration**: A single account manages diagnosis history, 
+  doctor appointments, and insurance documents.
+- **Secure Architecture**: Uses JWT for session management and BCrypt for 
+  password hashing, ensuring patient data privacy.
+- **Scalable ML**: The Python-Node.js bridge allows for easy model updates 
+  (retraining) without bringing down the web server.
+
+10. EXPECTED OUTCOME
+--------------------------------------------------------------------------------
+- **Improved Triage**: A reduction in unnecessary physical visits for minor 
+  ailments.
+- **Faster Access**: Significant reduction in time from "symptom onset" to 
+  "doctor appointment confirmation."
+- **User Empowerment**: Users will have a clearer understanding of their health 
+  status (via probability scores) and financial coverage (via policy analysis) 
+  before entering a clinic.
+- **Operational Efficiency**: Healthcare providers receive patients who are 
+  already pre-screened with documented symptom histories.
+
+================================================================================

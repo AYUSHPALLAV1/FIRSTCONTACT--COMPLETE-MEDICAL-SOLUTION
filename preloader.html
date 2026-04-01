@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Initializing...</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0f172a;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: #38bdf8;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .loader-wrapper {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            perspective: 1000px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Central 3D Object: Cube */
+        .cube-container {
+            width: 60px;
+            height: 60px;
+            transform-style: preserve-3d;
+            animation: rotateCube 3s infinite linear;
+        }
+
+        .cube-face {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border: 2px solid #38bdf8;
+            background: rgba(56, 189, 248, 0.1);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+        }
+
+        .front  { transform: rotateY(0deg) translateZ(30px); }
+        .back   { transform: rotateY(180deg) translateZ(30px); }
+        .right  { transform: rotateY(90deg) translateZ(30px); }
+        .left   { transform: rotateY(-90deg) translateZ(30px); }
+        .top    { transform: rotateX(90deg) translateZ(30px); }
+        .bottom { transform: rotateX(-90deg) translateZ(30px); }
+
+        @keyframes rotateCube {
+            0% { transform: rotateX(0deg) rotateY(0deg); }
+            100% { transform: rotateX(360deg) rotateY(360deg); }
+        }
+
+        /* Surrounding Animations (2D/3D Hybrid) */
+        .orbit {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(56, 189, 248, 0.1);
+            transform-style: preserve-3d;
+        }
+
+        .orbit-1 {
+            width: 140px;
+            height: 140px;
+            border-top: 3px solid #38bdf8;
+            animation: spin 2s infinite linear;
+        }
+
+        .orbit-2 {
+            width: 200px;
+            height: 200px;
+            border-right: 3px solid #0ea5e9;
+            animation: spin 3s infinite linear reverse;
+        }
+
+        .orbit-3 {
+            width: 260px;
+            height: 260px;
+            border-bottom: 3px solid #0284c7;
+            animation: spin 4s infinite linear;
+        }
+
+        @keyframes spin {
+            0% { transform: rotateZ(0deg) rotateX(45deg); }
+            100% { transform: rotateZ(360deg) rotateX(45deg); }
+        }
+
+        /* Loading Text */
+        .loading-text {
+            position: absolute;
+            bottom: -50px;
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            animation: pulse 1.5s infinite ease-in-out;
+            text-transform: uppercase;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; text-shadow: 0 0 10px #38bdf8; }
+        }
+
+        /* Burst Animation State */
+        body.burst-active {
+            animation: flashScreen 1.5s forwards;
+        }
+
+        .burst-active .cube-container {
+            animation: burstCube 1.5s forwards cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .burst-active .orbit {
+            animation: burstOrbit 1.5s forwards cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        
+        .burst-active .loading-text {
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        @keyframes burstCube {
+            0% { transform: rotateX(0deg) rotateY(0deg) scale(1); }
+            20% { transform: rotateX(90deg) rotateY(90deg) scale(1.5); }
+            100% { transform: rotateX(720deg) rotateY(720deg) scale(0); opacity: 0; }
+        }
+
+        @keyframes burstOrbit {
+            0% { transform: rotateZ(0deg) rotateX(45deg) scale(1); opacity: 1; }
+            100% { transform: rotateZ(180deg) rotateX(45deg) scale(10); opacity: 0; border-width: 5px; }
+        }
+
+        @keyframes flashScreen {
+            0% { background-color: #0f172a; }
+            80% { background-color: #ffffff; }
+            100% { background-color: #ffffff; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="loader-wrapper" id="loaderWrapper">
+        <div class="cube-container">
+            <div class="cube-face front"></div>
+            <div class="cube-face back"></div>
+            <div class="cube-face right"></div>
+            <div class="cube-face left"></div>
+            <div class="cube-face top"></div>
+            <div class="cube-face bottom"></div>
+        </div>
+        
+        <div class="orbit orbit-1"></div>
+        <div class="orbit orbit-2"></div>
+        <div class="orbit orbit-3"></div>
+
+        <div class="loading-text">System Initializing</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const totalDuration = 4000; // 4 seconds total
+            const burstStart = 2800; // Start burst at 2.8s
+
+            // Phase 2: Burst
+            setTimeout(() => {
+                document.body.classList.add('burst-active');
+            }, burstStart);
+
+            // Phase 3: Redirect
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, totalDuration);
+        });
+    </script>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

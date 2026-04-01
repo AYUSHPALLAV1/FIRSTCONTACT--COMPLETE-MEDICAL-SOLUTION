@@ -1,0 +1,14 @@
+
+{
+    "age": 45,
+    "gender": "Male",
+    "weight": 80,
+    "height": 175,
+    "systolicBP": 140,
+    "diastolicBP": 90,
+    "heartRate": 80,
+    "bodyTemp": 37,
+    "symptoms": ["Chest pain", "Shortness of breath"],
+    "familyHistory": ["Hypertension"],
+    "lifestyle": ["Smoking"]
+}

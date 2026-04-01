@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FirstContact - User Profile</title>
+    <link rel="stylesheet" href="home.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .profile-container {
+            max-width: 800px;
+            margin: 4rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .profile-header {
+            margin-bottom: 2rem;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            background: var(--bg-alt);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: var(--primary-color);
+            font-size: 4rem;
+            border: 4px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .profile-name {
+            font-size: 2rem;
+            color: var(--text-dark);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-role {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            background: var(--bg-alt);
+            color: var(--primary-color);
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .profile-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            text-align: left;
+        }
+
+        .detail-item {
+            padding: 1.5rem;
+            background: var(--bg-alt);
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .detail-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .detail-value {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            font-weight: 500;
+            word-break: break-all;
+        }
+
+        .logout-btn {
+            background: #e53e3e;
+            color: white;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logout-btn:hover {
+            background: #c53030;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 62, 62, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="home.html" class="logo" style="text-decoration: none;">
+            <i class="fas fa-heartbeat"></i> FirstContact
+        </a>
+        <div class="nav-links">
+            <a href="medidose.html" class="nav-btn">Medidose</a>
+            <div class="dropdown">
+                <a href="consultation.html" class="nav-btn">Consultation <i class="fas fa-caret-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="consultation.html?type=appointment">Appointment</a>
+                    <a href="consultation.html?type=hospitals">Hospitals Nearby</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a href="insurance.html" class="nav-btn">Insurance <i class="fas fa-caret-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="insurance.html?type=with">With Insurance</a>
+                    <a href="insurance.html?type=without">Without Insurance</a>
+                </div>
+            </div>
+            <a href="profile.html" class="nav-btn user-info-btn active" id="userInfoBtn"><i class="fas fa-user-circle"></i> User Info</a>
+        </div>
+    </nav>
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <h1 class="profile-name" id="userName">Loading...</h1>
+            <span class="profile-role" id="userRole">...</span>
+        </div>
+
+        <div class="profile-details">
+            <div class="detail-item">
+                <span class="detail-label"><i class="fas fa-envelope"></i> Email Address</span>
+                <div class="detail-value" id="userEmail">...</div>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label"><i class="fas fa-id-card"></i> User ID</span>
+                <div class="detail-value" id="userId">...</div>
+            </div>
+        </div>
+
+        <button id="logoutBtn" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+    </div>
+
+    <script>
+        // Check authentication
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = 'index.html';
+        }
+
+        // Get user data
+        const user = JSON.parse(localStorage.getItem('user'));
+        
+        if (user) {
+            // Update Navbar
+            document.getElementById('userInfoBtn').innerHTML = `<i class="fas fa-user-circle"></i> ${user.name}`;
+            
+            // Update Profile Page
+            document.getElementById('userName').textContent = user.name;
+            document.getElementById('userRole').textContent = user.role || 'User';
+            document.getElementById('userEmail').textContent = user.email;
+            document.getElementById('userId').textContent = user.id || user._id || 'N/A';
+        } else {
+            // Fallback: Fetch from API if localStorage user is missing but token exists
+            fetchUserProfile();
+        }
+
+        async function fetchUserProfile() {
+            try {
+                const response = await fetch('/api/auth/me', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    const userData = data.data.user;
+                    // Save to localStorage for future use
+                    localStorage.setItem('user', JSON.stringify({
+                        name: userData.name,
+                        email: userData.email,
+                        role: userData.role,
+                        id: userData._id
+                    }));
+                    
+                    // Update UI
+                    document.getElementById('userInfoBtn').innerHTML = `<i class="fas fa-user-circle"></i> ${userData.name}`;
+                    document.getElementById('userName').textContent = userData.name;
+                    document.getElementById('userRole').textContent = userData.role;
+                    document.getElementById('userEmail').textContent = userData.email;
+                    document.getElementById('userId').textContent = userData._id;
+                } else {
+                    // Token invalid
+                    localStorage.removeItem('token');
+                    window.location.href = 'index.html';
+                }
+            } catch (error) {
+                console.error('Error fetching profile:', error);
+            }
+        }
+
+        // Logout Logic
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            if(confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FirstContact - Home</title>
+    <link rel="stylesheet" href="home.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="home.html" class="logo" style="text-decoration: none;">
+            <i class="fas fa-heartbeat"></i> FirstContact
+        </a>
+        <div class="nav-links">
+            <a href="medidose.html" class="nav-btn">Medidose</a>
+            <div class="dropdown">
+                <a href="consultation.html" class="nav-btn">Consultation <i class="fas fa-caret-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="consultation.html?type=appointment">Appointment</a>
+                    <a href="consultation.html?type=hospitals">Hospitals Nearby</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a href="insurance.html" class="nav-btn">Insurance <i class="fas fa-caret-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="insurance.html?type=with">With Insurance</a>
+                    <a href="insurance.html?type=without">Without Insurance</a>
+                </div>
+            </div>
+            <a href="profile.html" class="nav-btn user-info-btn" id="userInfoBtn"><i class="fas fa-user-circle"></i> User Info</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="hero-section">
+        <div class="hero-content fade-in">
+            <h1>Inspired by care.<br><em>Designed for you.</em></h1>
+            <p>FirstContact helps you decide your next health step, safely and early. We focus on helping you understand when to monitor, when to visit a clinic, and when to seek urgent care while respecting cost and access.</p>
+            
+            <div class="hero-cta-group">
+                <a href="medidose.html" class="cta-button">Explore Medidose</a>
+                
+                <div class="social-proof">
+                    <div class="avatars">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="User">
+                    </div>
+                    <div class="rating-text">
+                        <div class="stars">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i> <span>4.8</span>
+                        </div>
+                        <span class="review-count">from 500+ reviews</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="hero-visuals">
+            <!-- Top Left: Image - From Left -->
+            <div class="visual-item v-img-1 slide-in-left">
+                <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Medical Tech">
+            </div>
+            
+            <!-- Top Right: Light Pill - From Top -->
+            <div class="visual-item v-card-light slide-in-down">
+                <div class="status-circle"><i class="fas fa-check"></i></div>
+                <span class="status-title">Successful</span>
+                <span class="status-sub">Diagnosis</span>
+            </div>
+            
+            <!-- Bottom Left: Dark Pill - From Bottom -->
+            <div class="visual-item v-card-dark slide-in-up">
+                <div class="float-icon"><i class="fas fa-heartbeat"></i></div>
+                <div class="card-content">
+                    <h3>94.7%</h3>
+                    <span>Accuracy</span>
+                </div>
+                <div class="mini-profile">
+                    <img src="https://randomuser.me/api/portraits/women/22.jpg" alt="Doctor">
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Down Indicator -->
+        <div class="scroll-down-indicator" onclick="window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Section 2: Consultation -->
+    <section class="feature-section alt-bg" id="consultation-section">
+        <div class="container">
+            <div class="section-image slide-in-left">
+                <video class="consultation-video" autoplay loop muted playsinline>
+                    <source src="Old_Lady_Consults_Doctor_Via_Video.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <div class="section-text consultation-content fade-in">
+                <span class="consultation-eyebrow">&mdash; VIDEO CONSULTATION</span>
+                <h2>Expert advice.<br><em>Right from home.</em></h2>
+                <p>Connect with Doctors from wherever you are. FirstContact helps you prepare for consultations by organizing your concerns and guiding you on urgency.</p>
+                <a href="consultation.html" class="text-link">Start a Consultation <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Insurance -->
+    <section class="feature-section" id="insurance-section">
+        <div class="container reverse">
+            <div class="section-image">
+                <div class="insurance-collage">
+                    <!-- Column 1 -->
+                    <div class="collage-col col-1">
+                        <img src="https://images.unsplash.com/photo-1542037104857-ffbb0b9155fb?auto=format&fit=crop&w=300&q=80" alt="Family" class="collage-img ins-fly-left">
+                        <img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=300&q=80" alt="Couple" class="collage-img ins-fly-bottom-left">
+                    </div>
+                    
+                    <!-- Column 2 -->
+                    <div class="collage-col col-2">
+                        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=300&q=80" alt="Woman" class="collage-img ins-fly-top">
+                        <div class="collage-card-highlight ins-fly-scale">
+                            <h3>Happy<br>Customers</h3>
+                            <div class="collage-avatars">
+                                <img src="https://randomuser.me/api/portraits/women/42.jpg" alt="User">
+                                <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="User">
+                                <img src="https://randomuser.me/api/portraits/women/33.jpg" alt="User">
+                                <span class="avatar-count">1.2M</span>
+                            </div>
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80" alt="Man" class="collage-img ins-fly-bottom">
+                    </div>
+                    
+                    <!-- Column 3 -->
+                    <div class="collage-col col-3">
+                        <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=300&q=80" alt="Friends" class="collage-img ins-fly-top-right">
+                        <img src="https://images.unsplash.com/photo-1516733725897-1aa73b87c8e8?auto=format&fit=crop&w=300&q=80" alt="Elderly" class="collage-img ins-fly-right">
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80" alt="Woman" class="collage-img ins-fly-bottom-right">
+                    </div>
+                </div>
+            </div>
+            <div class="section-text insurance-content fade-in">
+                <span class="insurance-eyebrow">&mdash; CHECK COVERAGE</span>
+                <h2>Insurance<br><em>Made Simple</em></h2>
+                <p>Healthcare decisions shouldn't feel confusing because of paperwork. FirstContact helps you understand your insurance plan so you can focus on care, not claims.</p>
+                <a href="insurance.html" class="text-link">Check Coverage <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Medidose (Tracking) -->
+    <section class="feature-section" id="medidose-section">
+        <div class="container">
+            <div class="section-image slide-in-left">
+                <img src="Live chatbot.gif" alt="Medidose Chatbot" class="medidose-gif">
+            </div>
+            <div class="section-text medidose-content fade-in">
+                <span class="medidose-eyebrow">&mdash; STAY ON TRACK</span>
+                <h2>Track Your<br><em>Medidose</em></h2>
+                <p>Never miss a dose again. Our smart tracking system reminds you when it's time to take your medication and keeps a history for your doctor.</p>
+                <a href="medidose.html" class="text-link">Go to Medidose <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Testimonials (Wall of Love) -->
+    <section class="feature-section" id="testimonials-section">
+        <div class="testimonials-container">
+            <div class="testimonials-header fade-in">
+                <h2>Join over people's trust<br><em>FirstContact.</em></h2>
+            </div>
+            <div class="testimonials-grid">
+                <!-- Card 1 -->
+                <div class="testimonial-card t-card-1 slide-in-up">
+                    <p>"FirstContact redirected my focus from external chaos to internal clarity during a rough phase. It didn't just light up my path, but taught me how to keep the light on."</p>
+                    <div class="t-user">
+                        <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="User">
+                        <div class="t-user-info">
+                            <span class="t-name">KVSupernova</span>
+                            <span class="t-source">on the App Store</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="testimonial-card t-card-2 slide-in-up" style="transition-delay: 0.1s;">
+                    <p>"FirstContact emerged as a beacon of hope amid my therapist search hindered by Medicare constraints. Its unmatched intuitiveness has been pivotal in reclaiming my mental health."</p>
+                    <div class="t-user">
+                        <img src="https://randomuser.me/api/portraits/women/42.jpg" alt="User">
+                        <div class="t-user-info">
+                            <span class="t-name">Mellyberry84</span>
+                            <span class="t-source">on the App Store</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="testimonial-card t-card-3 slide-in-up" style="transition-delay: 0.2s;">
+                    <p>"FirstContact has been a cornerstone in easing my anxiety and depression, providing a convenient platform to build healing habits amidst coping with various mental battles."</p>
+                    <div class="t-user">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
+                        <div class="t-user-info">
+                            <span class="t-name">Chryssee</span>
+                            <span class="t-source">on the App Store</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 4 -->
+                <div class="testimonial-card t-card-4 slide-in-up" style="transition-delay: 0.3s;">
+                    <p>"There is something about FirstContact that makes me feel a sense of peace and motivation. It's clean, works super fast, and is exactly what I needed."</p>
+                    <div class="t-user">
+                        <img src="https://randomuser.me/api/portraits/women/89.jpg" alt="User">
+                        <div class="t-user-info">
+                            <span class="t-name">Daphne</span>
+                            <span class="t-source">on the App Store</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 6: Quote / CTA -->
+    <section class="quote-section" id="quote-section">
+        <div class="quote-container fade-in">
+            <svg viewBox="0 0 1000 200" class="curved-text-svg">
+                <path id="curve" d="M50,180 Q500,20 950,180" fill="transparent"/>
+                <text width="1000">
+                    <textPath xlink:href="#curve" startOffset="50%" text-anchor="middle" class="curved-text-content">
+                        Progress is not achieved by luck, but by working on yourself daily. - Epictetus
+                    </textPath>
+                </text>
+            </svg>
+            <div class="quote-cta-wrapper">
+                <a href="medidose.html" class="cta-button white-shadow">Start Now <i class="fas fa-chevron-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="modern-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <i class="fas fa-heartbeat"></i> FirstContact
+                </div>
+                <p>Your companion for better health decisions.</p>
+                <div class="footer-socials">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="footer-links-group">
+                <h4>Product</h4>
+                <a href="medidose.html">Medidose</a>
+                <a href="consultation.html">Consultation</a>
+                <a href="insurance.html">Insurance</a>
+            </div>
+            <div class="footer-links-group">
+                <h4>Company</h4>
+                <a href="#">About Us</a>
+                <a href="#">Careers</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="footer-links-group">
+                <h4>Legal</h4>
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+                <a href="#">Security</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 FirstContact. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="home.js"></script>
+    <script>
+        // Check if user is logged in
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = 'index.html';
+        }
+        
+        // Update user info button text
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user) {
+            document.getElementById('userInfoBtn').innerHTML = `<i class="fas fa-user-circle"></i> ${user.name}`;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+================================================================================
+FIRSTCONTACT – REPORT CORE SECTIONS
+================================================================================
+
+1. ABSTRACT
+--------------------------------------------------------------------------------
+FirstContact is an integrated digital healthcare platform that acts as a
+patient’s first point of contact when they experience symptoms. The system
+collects basic information, vital signs, symptoms, family history, and lifestyle
+factors, and processes them through a Random Forest–based machine learning
+engine to generate a preliminary diagnosis with confidence scores. Based on the
+predicted conditions, the platform recommends appropriate specialists, enables
+online consultation booking, helps users discover nearby hospitals, and
+analyzes health insurance policies to estimate coverage. By combining AI-driven
+triage, doctor discovery, and insurance analysis in a single workflow,
+FirstContact reduces the time between symptom onset and professional care,
+especially for users who may not have immediate access to a doctor.
+
+
+2. INTRODUCTION
+--------------------------------------------------------------------------------
+Healthcare systems often struggle at the very first step of the care journey:
+when a patient decides whether their symptoms are serious and whom they should
+consult. Many people rely on web searches or generic symptom checkers, which
+can be inaccurate, anxiety-inducing, and disconnected from the next steps such
+as booking a doctor or checking insurance coverage. At the same time, hospitals
+and clinics face increasing load on outpatient departments, with many visits
+that could have been routed more efficiently if a structured triage process was
+available at home.
+
+FirstContact addresses this gap by providing an end-to-end digital “front
+door” for healthcare. The web-based system guides the user through a structured
+multi-step form that captures demographics, vitals, symptoms, family history,
+and lifestyle data. This information is sent to a Python-based ML engine that
+uses an ensemble model (Random Forest Classifier) to predict the top probable
+conditions. The platform then closes the loop by recommending relevant
+specialists, enabling appointment scheduling, showing nearby hospitals on an
+interactive map, and analyzing uploaded insurance policies. The result is a
+single platform that connects clinical insight, logistics, and financial
+planning.
+
+
+3. OBJECTIVES
+--------------------------------------------------------------------------------
+- To design and implement an AI-driven preliminary diagnosis engine using a
+  Random Forest Classifier trained on synthetic clinical data.
+- To capture structured patient information including vitals, symptoms, family
+  history, and lifestyle factors via an intuitive multi-step web interface.
+- To provide automated specialist recommendations and online consultation
+  booking aligned with the predicted conditions.
+- To integrate hospital discovery using mapping services so that users can
+  locate nearby facilities suited to their needs.
+- To analyze digital insurance policy documents and estimate coverage for the
+  predicted conditions, reducing financial uncertainty.
+- To create a secure, scalable, and user-friendly system that can serve as the
+  first digital touchpoint in a patient’s healthcare journey.
+
+
+4. SCOPE
+--------------------------------------------------------------------------------
+- The system focuses on preliminary, non-diagnostic triage based on user-
+  provided data; it does not replace professional medical judgment.
+- The current implementation targets common lifestyle and chronic conditions
+  (for example, hypertension, diabetes risk, cardiovascular issues, and common
+  infections) where vitals and simple symptoms provide strong signals.
+- The platform supports individual users accessing the web application on
+  desktop or mobile devices; extensions to hospital kiosks or mobile apps are
+  feasible future enhancements.
+- Appointment booking covers listing doctors, viewing their specialization and
+  availability, and creating appointment entries; deeper integration with
+  hospital EMR systems is outside the current scope.
+- Insurance analysis is limited to reading policy text, matching diseases with
+  coverage keywords, and presenting high-level coverage indications rather than
+  legally binding decisions.
+
+
+5. LITERATURE REVIEW (SUMMARY)
+--------------------------------------------------------------------------------
+Existing work in AI-assisted healthcare can be grouped into three areas:
+
+- Symptom checkers and online triage:
+  Several systems use decision trees or rule-based logic to suggest possible
+  conditions based on symptom inputs. While interpretable, they often ignore
+  vitals and blood-test data, and they do not connect users to concrete next
+  steps such as booking a doctor.
+
+- Machine learning for disease prediction:
+  Research has shown that ensemble methods such as Random Forests perform well
+  for predicting chronic diseases like diabetes, heart disease, and kidney
+  disorders using mixed numerical and categorical features. These models are
+  robust to noise, handle missing values through averaging, and provide
+  probability scores that are useful for triage rather than binary classification.
+
+- Digital health platforms and telemedicine:
+  Teleconsultation systems and hospital portals exist for booking appointments
+  and managing records. However, most of them assume that the user already knows
+  which specialist to see and do not include AI-based triage linked to insurance
+  analysis.
+
+FirstContact combines insights from these three lines of work: using ensemble
+ML for probabilistic triage, embedding it inside a practical teleconsultation
+workflow, and adding an insurance-coverage layer that most academic systems
+do not address.
+
+
+6. ARCHITECTURAL DIAGRAM (TEXTUAL DESCRIPTION)
+--------------------------------------------------------------------------------
+The high-level architecture can be described as follows:
+
+- Client Layer:
+  A responsive web frontend (HTML, CSS, JavaScript) that renders the home page,
+  Medidose form, insurance page, and consultation page. It communicates with
+  the backend using REST APIs and displays results such as predicted diseases,
+  doctor lists, and insurance coverage summaries.
+
+- Application Layer:
+  A Node.js/Express server that manages user authentication, routes incoming
+  requests, and orchestrates interactions between the frontend, machine learning
+  engine, and database. It exposes endpoints for prediction, doctor management,
+  appointments, and insurance analysis.
+
+- ML Engine Layer:
+  A Python module invoked as a child process by the Node.js backend. It loads
+  a trained Random Forest model, preprocesses incoming data (BMI calculation,
+  vitals normalization, one-hot encoding of symptoms/history/lifestyle), and
+  returns the top probable conditions with confidence scores and meta-data.
+
+- Data Layer:
+  A MongoDB database storing user profiles, doctor details, appointments, and
+  saved predictions. It supports querying by specialization, location, and user
+  ID to enable personalized experiences.
+
+- Integration Layer:
+  External services such as Google Maps for hospital location and Stripe (or a
+  similar gateway) for payments can be plugged in to complete the workflow.
+
+In a graphical architectural diagram, these components would be represented as
+separate blocks connected by arrows indicating data flow between browser,
+backend, ML engine, database, and external APIs.
+
+
+7. FLOW DIAGRAM (TEXTUAL DESCRIPTION)
+--------------------------------------------------------------------------------
+The operational flow of FirstContact can be described step by step:
+
+1. The user visits the home page and logs in or registers.
+2. The user navigates to the Medidose page and fills out the multi-step form:
+   basic details, vitals, symptoms, family history, and lifestyle.
+3. On submission, the frontend sends the collected data as JSON to the backend
+   prediction endpoint.
+4. The Node.js server validates the request and spawns the Python ML engine,
+   passing the data to the Random Forest model.
+5. The ML engine preprocesses the data, runs inference, and returns the top
+   predicted conditions with confidence scores and recommended specialist types.
+6. The backend forwards this result to the frontend, which displays it to the
+   user along with severity/urgency information.
+7. The user can choose to:
+   - Book an appointment with a recommended specialist,
+   - View nearby hospitals on the consultation page, or
+   - Upload/view an insurance policy on the insurance page.
+8. Appointment details are stored in MongoDB; insurance text is analyzed to
+   highlight whether the predicted conditions are likely to be covered.
+9. The user receives confirmation of the next steps (consultation details,
+   hospital directions, or insurance coverage summary).
+
+In a standard flowchart, these steps would be represented using start/end
+terminals, process blocks for data collection and prediction, decision blocks
+for user choices, and arrows showing the progression from input to actions.
+
+
+8. LIST OF MODULES
+--------------------------------------------------------------------------------
+- User Authentication and Home Module:
+  Handles registration, login, session management, and navigation between the
+  main pages of the application.
+
+- Medidose (AI Triage) Module:
+  Multi-step form for collecting patient data and invoking the ML engine to
+  generate preliminary disease predictions with explanations.
+
+- Consultation and Doctor Management Module:
+  Manages doctor profiles, displays available specialists, and allows users to
+  book appointments and view upcoming consultations.
+
+- Hospital Discovery Module:
+  Integrates with mapping services to show nearby hospitals and clinics relevant
+  to the predicted conditions or chosen specialist.
+
+- Insurance Analysis Module:
+  Allows users to input or upload insurance policy details and runs text-based
+  analysis to estimate coverage for the predicted diseases.
+
+- Payment and Confirmation Module (optional/extendable):
+  Supports payment initiation for consultations and records confirmations for
+  user reference.
+
+- Administration and Data Management Module:
+  Provides backend scripts and interfaces for seeding doctor data, managing
+  records, and monitoring system health.
+
+
+9. REFERENCES (SAMPLE)
+--------------------------------------------------------------------------------
+[1] Breiman, L. “Random Forests.” Machine Learning, 45(1), 5–32, 2001.
+
+[2] Miotto, R., Wang, F., Wang, S., Jiang, X., and Dudley, J. T. “Deep learning
+    for healthcare: review, opportunities and challenges.” Briefings in
+    Bioinformatics, 19(6), 1236–1246, 2018.
+
+[3] Semigran, H. L., et al. “Evaluation of symptom checkers for self diagnosis
+    and triage: audit study.” BMJ, 351, h3480, 2015.
+
+[4] Rajkomar, A., Dean, J., and Kohane, I. “Machine learning in medicine.”
+    New England Journal of Medicine, 380, 1347–1358, 2019.
+
+[5] World Health Organization. “Digital Health Strategy 2020–2025.”
+
+[6] Relevant documentation and APIs: Node.js, Express, MongoDB, scikit-learn,
+    and Google Maps Platform.
+
+================================================================================

@@ -1,0 +1,1357 @@
+:root {
+    --primary-color: #4FD1C5;
+    --primary-dark: #38B2AC;
+    --text-dark: #1A202C;
+    --text-light: #718096;
+    --bg-white: #FFFFFF;
+    --bg-alt: #F7FAFC;
+    --transition: all 0.3s ease;
+
+    /* Inspiration Variables */
+    --gray-700: #424242;
+    --gray-500: #737373;
+    --black: black;
+    --border-radius--tiny: .375rem;
+    --light-grey: #f4f4f4;
+    --border-radius--xtiny: .25rem;
+    --gray-800: #292929;
+    --gray-25: #fcfcfc;
+    --gray-400: #a3a3a3;
+    --gray-50: #fafafa;
+    --gray-900: #141414;
+    --dark-green: #25fabe;
+    --green: #61ffc9;
+    --nav--gray-800: #292929;
+    --nav--gray-50: #fafafa;
+    --gray-600: #525252;
+    --white: white;
+    --border-radius--xxsmall: .5rem;
+    --gray-300: #d6d6d6;
+    --gray-200: #e5e5e5;
+    --gray-100: whitesmoke;
+    --border-radius--xlarge: 2rem;
+    --border-radius--xxtiny: .175rem;
+    --border-radius--large-still: 1.75rem;
+    --border-radius--0: 0rem;
+    --border-radius--medium: 1.25rem;
+    --border-radius--large-change: 1.75rem;
+    --border-radius--xmedium: 1.5rem;
+    --border-radius--xsmall: .75rem;
+    --border-radius--small: 1rem;
+    --border-radius--home-hero: 2rem;
+    --nav--gray-700: #424242;
+    --border-radius--about-image: 2rem;
+    --border-radius--button-circle: 100vw;
+    --nav--circle: #292929;
+    --nav--y: #61ffc9;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: var(--bg-white);
+    color: var(--text-dark);
+    line-height: 1.6;
+    overflow-x: hidden; /* Prevent horizontal scroll from animations */
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 3rem; /* Adjusted padding for floating look */
+    
+    /* Glass Effect */
+    background: rgba(255, 255, 255, 0.4); 
+    backdrop-filter: blur(15px); /* Increased blur for better readability */
+    -webkit-backdrop-filter: blur(15px); 
+    border-radius: 20px; 
+    border: 1px solid rgba(255, 255, 255, 0.3); 
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.1), 
+        inset 0 1px 0 rgba(255, 255, 255, 0.5), 
+        inset 0 -1px 0 rgba(255, 255, 255, 0.1), 
+        inset 0 0 14px 7px rgba(255, 255, 255, 0.2); 
+        
+    position: sticky;
+    top: 1rem; /* Floating from top */
+    z-index: 1000;
+    
+    /* Centering and sizing */
+    margin: 1rem auto;
+    width: 95%;
+    max-width: 1400px;
+    /* overflow: hidden; Removed to allow dropdowns to be visible */
+}
+
+.navbar::before { 
+    content: ''; 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    height: 1px; 
+    background: linear-gradient( 
+        90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.8), 
+        transparent 
+    ); 
+    pointer-events: none;
+} 
+ 
+.navbar::after { 
+    content: ''; 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 1px; 
+    height: 100%; 
+    background: linear-gradient( 
+        180deg, 
+        rgba(255, 255, 255, 0.8), 
+        transparent, 
+        rgba(255, 255, 255, 0.3) 
+    ); 
+    pointer-events: none;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo i {
+    color: var(--primary-color);
+}
+
+.nav-links {
+    display: flex;
+    gap: 1.5rem; /* Slightly reduced gap to prevent wrapping on smaller screens */
+    align-items: center; /* Ensure items are vertically aligned */
+    flex-wrap: nowrap; /* Prevent wrapping */
+}
+
+
+.nav-btn {
+    position: relative;
+    text-decoration: none;
+    color: #4a5568; /* Dark grey text */
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.7rem 1.8rem;
+    border-radius: 9999px; /* Pill shape */
+    
+    /* Glass/Metallic Gradient */
+    background: linear-gradient(180deg, #FFFFFF 0%, #F4F6F8 100%);
+    
+    /* 3D Effects: Borders and Shadows */
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.05),
+        0 2px 4px -1px rgba(0, 0, 0, 0.03),
+        inset 0 1px 0 rgba(255, 255, 255, 1), /* Top Shine */
+        inset 0 -1px 0 rgba(0, 0, 0, 0.05); /* Bottom depth */
+        
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    display: inline-flex;
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    white-space: nowrap; /* Prevent text wrapping */
+    gap: 0.6rem;
+    letter-spacing: 0.3px;
+}
+
+.nav-btn:hover {
+    transform: translateY(-2px);
+    color: var(--primary-color);
+    background: linear-gradient(180deg, #FFFFFF 0%, #EDF2F7 100%);
+    box-shadow: 
+        0 10px 15px -3px rgba(0, 0, 0, 0.08),
+        0 4px 6px -2px rgba(0, 0, 0, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+.nav-btn:active {
+    transform: translateY(1px);
+    box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.05),
+        inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* User Info Button - Inherits new style, removed old borders */
+.user-info-btn {
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    padding: 0.7rem 1.8rem;
+    border-radius: 9999px;
+    color: var(--primary-color); /* Keep primary color for distinction */
+}
+
+.user-info-btn:hover {
+    background: linear-gradient(180deg, #FFFFFF 0%, #E2E8F0 100%);
+    color: var(--primary-dark);
+}
+
+/* Dropdown Styles */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--bg-white);
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+    z-index: 1001;
+    border-radius: 8px;
+    top: 100%; /* Position below the link */
+    left: 50%;
+    transform: translateX(-50%); /* Center align */
+    padding: 0.5rem 0;
+    margin-top: 0.5rem; /* Gap for the pill button */
+}
+
+.dropdown-content a {
+    color: var(--text-dark);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+
+.dropdown-content a:hover {
+    background-color: var(--bg-alt);
+    color: var(--primary-color);
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Hero Section Redesign */
+.hero-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem 5% 4rem; /* Reduced top padding */
+    min-height: 100vh; /* Changed to 100vh for full screen sticky effect */
+    gap: 4rem;
+    background: var(--bg-white);
+    overflow: hidden; /* Prevent visual spill */
+    position: sticky; /* Sticky positioning */
+    top: 0;
+    z-index: 1;
+    will-change: transform, opacity;
+}
+
+.hero-content {
+    flex: 1;
+    max-width: 550px;
+    z-index: 2;
+}
+
+.hero-eyebrow {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--primary-dark);
+}
+
+.hero-content h1 {
+    font-size: 4rem; /* Increased size */
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    color: #0F172A; /* Darker navy/black */
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+}
+
+.hero-content h1 em {
+    font-family: 'Georgia', serif; /* Serif for emphasis */
+    font-style: italic;
+    font-weight: 400;
+    color: #0F172A;
+}
+
+.hero-content p {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+    max-width: 90%;
+}
+
+/* CTA Group */
+.hero-cta-group {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.cta-button {
+    background-color: #1A3C34; /* Dark Green from image */
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 20px rgba(26, 60, 52, 0.2);
+}
+
+.cta-button:hover {
+    background-color: #2C5F52;
+    transform: translateY(-2px);
+    box-shadow: 0 15px 25px rgba(26, 60, 52, 0.3);
+}
+
+/* Social Proof */
+.social-proof {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.avatars {
+    display: flex;
+}
+
+.avatars img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 3px solid white;
+    object-fit: cover;
+    margin-left: -15px; /* Overlap */
+}
+
+.avatars img:first-child {
+    margin-left: 0;
+}
+
+.rating-text {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9rem;
+}
+
+.stars {
+    color: #F59E0B; /* Amber/Orange */
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.review-count {
+    color: var(--text-light);
+    font-size: 0.8rem;
+    text-decoration: underline;
+    text-decoration-color: #cbd5e1;
+}
+
+/* Hero Visuals - Collage */
+.hero-visuals {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    position: relative;
+    max-width: 650px;
+    align-items: center; /* Default center alignment */
+}
+
+.visual-item {
+    position: relative;
+    transition: transform 0.3s ease;
+    opacity: 0; /* Hidden initially for animation */
+}
+
+.visual-item:hover {
+    transform: translateY(-5px);
+}
+
+.visual-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* 1. Top Left Image */
+.v-img-1 {
+    height: 220px;
+    border-radius: 60px 60px 60px 20px; /* Organic shape */
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    align-self: end; /* Push to bottom of its grid cell area */
+}
+
+/* 2. Top Right Pill (Light) */
+.v-card-light {
+    background: #F3F0E7; /* Beige */
+    height: 280px;
+    border-radius: 100px 40px 100px 40px; /* Inverted Organic Shape */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #8D8D80;
+    padding: 2rem;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+    grid-row: span 2; /* Occupy space differently if needed, but let's stick to flow */
+    transform: translateY(-30px); /* Shift up */
+}
+
+.status-circle {
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1A3C34;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.status-title {
+    display: block;
+    font-size: 1rem;
+    color: #8D8D80;
+    margin-bottom: 0.2rem;
+}
+
+.status-sub {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #A0A090;
+}
+
+/* 3. Bottom Left Pill (Dark) */
+.v-card-dark {
+    background: #1A3C34; /* Dark Green */
+    height: 320px;
+    border-radius: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2.5rem 1.5rem;
+    color: white;
+    box-shadow: 0 25px 50px rgba(26, 60, 52, 0.3);
+    grid-column: 1;
+    transform: translateY(20px); /* Shift down slightly */
+}
+
+.float-icon {
+    background: white;
+    color: #1A3C34;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.card-content {
+    text-align: center;
+}
+
+.card-content h3 {
+    font-size: 2.5rem;
+    font-weight: 400;
+    margin: 0;
+    line-height: 1;
+}
+
+.card-content span {
+    font-style: italic;
+    opacity: 0.8;
+    font-weight: 300;
+}
+
+.mini-profile img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.2);
+}
+
+
+
+/* Scroll Down Indicator */
+.scroll-down-indicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--primary-dark);
+    font-size: 2rem;
+    animation: bounce 2s infinite;
+    cursor: pointer;
+    z-index: 10;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.scroll-down-indicator:hover {
+    opacity: 1;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    40% {
+        transform: translateX(-50%) translateY(-10px);
+    }
+    60% {
+        transform: translateX(-50%) translateY(-5px);
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+    .hero-content h1 {
+        font-size: 3rem;
+    }
+    
+    .hero-visuals {
+        transform: scale(0.9);
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        flex-direction: column;
+        padding-top: 6rem;
+        text-align: center;
+    }
+
+    .hero-content {
+        max-width: 100%;
+        margin-bottom: 3rem;
+    }
+
+    .hero-eyebrow {
+        justify-content: center;
+    }
+
+    .hero-cta-group {
+        justify-content: center;
+    }
+    
+    .hero-visuals {
+        width: 100%;
+        max-width: 500px;
+        gap: 1rem;
+    }
+    
+    .v-card-light, .v-card-dark {
+        height: 240px; /* Smaller on mobile */
+    }
+    
+    .v-img-1, .v-img-2 {
+        height: 180px;
+    }
+}
+
+.feature-section {
+    padding: 5rem 5%;
+    position: relative; /* Ensure it sits on top of sticky hero */
+    z-index: 10;
+    background-color: var(--bg-white); /* Default bg */
+}
+
+.feature-section.alt-bg {
+    background-color: var(--bg-alt);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+}
+
+.container.reverse {
+    flex-direction: row-reverse;
+}
+
+.section-text {
+    flex: 1;
+}
+
+.section-text h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-dark);
+}
+
+.section-text p {
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+}
+
+.text-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: var(--transition);
+}
+
+.text-link:hover {
+    gap: 0.8rem;
+    color: var(--primary-dark);
+}
+
+.section-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.consultation-video {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    object-fit: cover;
+}
+
+.feature-icon-large {
+    font-size: 8rem;
+    color: var(--primary-color);
+    opacity: 0.2;
+}
+
+/* Medidose Section Styles */
+#medidose-section {
+    position: relative;
+    z-index: 3; /* Higher than insurance */
+    background-color: var(--bg-white);
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.05);
+}
+
+.medidose-gif {
+    width: 100%;
+    max-width: 400px; /* Adjust size as needed */
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1); /* Soft shadow */
+    transition: transform 0.3s ease;
+    mix-blend-mode: multiply; /* Ensure perfect blending */
+}
+
+.medidose-gif:hover {
+    transform: scale(1.02);
+}
+
+/* Medidose Text Styles */
+.medidose-eyebrow {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.medidose-eyebrow::before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--primary-dark);
+}
+
+.medidose-content h2 {
+    font-size: 3.5rem;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    color: #0F172A;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+}
+
+.medidose-content h2 em {
+    font-family: 'Georgia', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: #0F172A;
+}
+
+/* Testimonials Section (Wall of Love) */
+#testimonials-section {
+    position: relative;
+    z-index: 4; /* Layers on top of Medidose */
+    background-color: var(--bg-white);
+    padding: 8rem 5%;
+    min-height: 100vh;
+    box-shadow: 0 -20px 50px rgba(0,0,0,0.05);
+}
+
+.testimonials-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.testimonials-header {
+    text-align: center;
+    margin-bottom: 5rem;
+}
+
+.testimonials-header h2 {
+    font-size: 3rem;
+    line-height: 1.2;
+    color: #0F172A;
+}
+
+.testimonials-header em {
+    font-family: 'Georgia', serif;
+    font-weight: 400;
+}
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.testimonial-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid var(--gray-100);
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+}
+
+.testimonial-card p {
+    font-size: 1rem;
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+    font-style: italic;
+    line-height: 1.6;
+}
+
+.t-user {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.t-user img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.t-user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.t-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #0F172A;
+}
+
+.t-source {
+    font-size: 0.8rem;
+    color: var(--text-light);
+}
+
+/* Quote Section */
+.quote-section {
+    position: relative;
+    z-index: 5;
+    background-color: var(--bg-white);
+    padding: 6rem 5% 8rem;
+    text-align: center;
+    overflow: hidden;
+}
+
+.quote-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.curved-text-svg {
+    width: 100%;
+    height: auto;
+    max-width: 900px;
+    margin: 0 auto;
+    display: block;
+    overflow: visible;
+}
+
+.curved-text-content {
+    font-size: 22px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    fill: #0F172A;
+    letter-spacing: 0.5px;
+}
+
+.quote-cta-wrapper {
+    margin-top: -30px; /* Pull button up slightly */
+    position: relative;
+    z-index: 2;
+}
+
+.cta-button.white-shadow {
+    background-color: #0F172A;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.2);
+}
+
+.cta-button.white-shadow:hover {
+    background-color: #1E293B;
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(15, 23, 42, 0.3);
+}
+
+/* Modern Footer */
+.modern-footer {
+    background-color: #F8FAFC;
+    padding: 5rem 5% 2rem;
+    border-top: 1px solid var(--gray-200);
+    z-index: 6;
+    position: relative;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 4rem;
+}
+
+.footer-brand p {
+    color: var(--text-light);
+    margin: 1rem 0 1.5rem;
+    max-width: 300px;
+}
+
+.footer-logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0F172A;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.footer-logo i {
+    color: var(--primary-color);
+}
+
+.footer-socials {
+    display: flex;
+    gap: 1rem;
+}
+
+.footer-socials a {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0F172A;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.footer-socials a:hover {
+    background: var(--primary-color);
+    color: white;
+    transform: translateY(-3px);
+}
+
+.footer-links-group h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #0F172A;
+}
+
+.footer-links-group a {
+    display: block;
+    color: var(--text-light);
+    margin-bottom: 0.8rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links-group a:hover {
+    color: var(--primary-color);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid var(--gray-200);
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+    }
+    
+    .footer-brand p {
+        margin: 1rem auto 1.5rem;
+    }
+    
+    .footer-socials {
+        justify-content: center;
+    }
+    
+    .curved-text-content {
+        font-size: 16px; /* Smaller text on mobile */
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInUp {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInDown {
+    from { opacity: 0; transform: translateY(-50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in { opacity: 0; }
+.slide-in-left { opacity: 0; }
+.slide-in-right { opacity: 0; }
+.slide-in-up { opacity: 0; }
+.slide-in-down { opacity: 0; }
+
+.visible.fade-in { animation: fadeIn 1s ease forwards; }
+.visible.slide-in-left { animation: slideInLeft 1s ease forwards; }
+.visible.slide-in-right { animation: slideInRight 1s ease forwards; }
+.visible.slide-in-up { animation: slideInUp 1s ease forwards; }
+.visible.slide-in-down { animation: slideInDown 1s ease forwards; }
+
+/* Consultation Section Redesign */
+.consultation-content {
+    max-width: 550px;
+}
+
+.consultation-eyebrow {
+    display: flex;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.consultation-eyebrow::before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--primary-dark);
+}
+
+.consultation-content h2 {
+    font-size: 3.5rem; /* Hero style */
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    color: #0F172A;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+}
+
+.consultation-content h2 em {
+    font-family: 'Georgia', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: #0F172A;
+}
+
+.consultation-content p {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+    max-width: 90%;
+}
+
+@media (max-width: 1024px) {
+    .consultation-content h2 {
+        font-size: 2.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .consultation-content h2 {
+        font-size: 2.2rem;
+    }
+    .consultation-eyebrow {
+        justify-content: center;
+    }
+    .consultation-content {
+        text-align: center;
+        max-width: 100%;
+    }
+    .consultation-content p {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* Insurance Collage */
+.insurance-collage {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    max-width: 600px; /* Constrain width so it doesn't blow up */
+    margin: 0 auto;
+}
+
+.collage-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex: 1;
+}
+
+.collage-img {
+    width: 100%;
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.collage-img:hover {
+    transform: scale(1.02);
+}
+
+/* Staggering */
+.col-1 {
+    margin-top: 3rem;
+}
+
+.col-2 {
+    margin-top: 0;
+}
+
+.col-3 {
+    margin-top: 1.5rem;
+}
+
+/* Highlight Card */
+.collage-card-highlight {
+    background-color: #F59E0B; /* Amber/Orange from hero stars or close to image */
+    color: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    min-height: 160px; /* Ensure it has some height */
+    box-shadow: 0 10px 15px rgba(245, 158, 11, 0.3);
+}
+
+.collage-card-highlight h3 {
+    font-size: 1.2rem;
+    line-height: 1.2;
+    margin: 0;
+    font-weight: 600;
+    font-family: 'Georgia', serif; /* Match "Happy Customers" vibe */
+    font-style: italic;
+}
+
+.collage-avatars {
+    display: flex;
+    align-items: center;
+}
+
+.collage-avatars img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid white;
+    margin-left: -10px;
+    object-fit: cover;
+}
+
+.collage-avatars img:first-child {
+    margin-left: 0;
+}
+
+.avatar-count {
+    background: white;
+    color: #F59E0B;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-left: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .insurance-collage {
+        flex-direction: row; /* Keep row but maybe scroll? Or stack? */
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .collage-col {
+        min-width: 140px; /* Two cols on mobile? */
+    }
+    
+    .col-1, .col-2, .col-3 {
+        margin-top: 0; /* Remove stagger on mobile */
+    }
+}
+
+/* Consultation Sticky Effect */
+#consultation-section {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background-color: var(--bg-alt); /* Ensure background is set */
+}
+
+#insurance-section {
+    position: sticky; /* Changed to sticky for next transition */
+    top: 0;
+    z-index: 2; /* Higher than consultation */
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background-color: var(--bg-white); /* Ensure opacity doesn't show through */
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.05); /* Slight shadow for separation */
+}
+
+/* Insurance Collage Animations */
+.ins-fly-left, .ins-fly-right, .ins-fly-top, .ins-fly-bottom,
+.ins-fly-bottom-left, .ins-fly-top-right, .ins-fly-bottom-right, .ins-fly-scale {
+    opacity: 0;
+    transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.ins-fly-left.visible {
+    animation: flyInLeft 1s forwards;
+}
+
+.ins-fly-right.visible {
+    animation: flyInRight 1s forwards;
+}
+
+.ins-fly-top.visible {
+    animation: flyInTop 1s forwards;
+}
+
+.ins-fly-bottom.visible {
+    animation: flyInBottom 1s forwards;
+}
+
+.ins-fly-bottom-left.visible {
+    animation: flyInBottomLeft 1s forwards;
+}
+
+.ins-fly-top-right.visible {
+    animation: flyInTopRight 1s forwards;
+}
+
+.ins-fly-bottom-right.visible {
+    animation: flyInBottomRight 1s forwards;
+}
+
+.ins-fly-scale.visible {
+    animation: scaleIn 0.8s 0.2s forwards; /* Slight delay for center piece */
+}
+
+
+@keyframes flyInLeft {
+    0% { opacity: 0; transform: translateX(-100px); }
+    100% { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes flyInRight {
+    0% { opacity: 0; transform: translateX(100px); }
+    100% { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes flyInTop {
+    0% { opacity: 0; transform: translateY(-100px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes flyInBottom {
+    0% { opacity: 0; transform: translateY(100px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes flyInBottomLeft {
+    0% { opacity: 0; transform: translate(-80px, 80px); }
+    100% { opacity: 1; transform: translate(0, 0); }
+}
+
+@keyframes flyInTopRight {
+    0% { opacity: 0; transform: translate(80px, -80px); }
+    100% { opacity: 1; transform: translate(0, 0); }
+}
+
+@keyframes flyInBottomRight {
+    0% { opacity: 0; transform: translate(80px, 80px); }
+    100% { opacity: 1; transform: translate(0, 0); }
+}
+
+@keyframes scaleIn {
+    0% { opacity: 0; transform: scale(0.5); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* Insurance Section Text Redesign */
+.insurance-eyebrow {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.insurance-eyebrow::before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--primary-dark);
+}
+
+.insurance-content h2 {
+    font-size: 3.5rem; /* Larger like Hero */
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    color: #0F172A;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+}
+
+.insurance-content h2 em {
+    font-family: 'Georgia', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: #0F172A;
+}
+
+/* Insurance Collage Hover Effects */
+.collage-img {
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
+    cursor: pointer;
+}
+
+.collage-img:hover {
+    transform: scale(1.05) translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    z-index: 10;
+    position: relative;
+}
+
+.collage-card-highlight {
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
+    cursor: pointer;
+}
+
+.collage-card-highlight:hover {
+    transform: scale(1.05) translateY(-5px);
+    box-shadow: 0 20px 35px rgba(245, 158, 11, 0.5);
+    z-index: 10;
+    position: relative;
+}

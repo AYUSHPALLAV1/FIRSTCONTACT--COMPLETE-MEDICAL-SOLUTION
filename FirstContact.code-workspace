@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../cute-robot-companion-glb"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "FirstContact"
+	}
+}
